@@ -134,6 +134,15 @@
         <DCCReference Include="uPessoa.pas"/>
         <DCCReference Include="uAluno.pas"/>
         <DCCReference Include="uProfessor.pas"/>
+        <DCCReference Include="uAlunoAdd.pas">
+            <Form>modalAluno</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="uConnection.pas">
+            <Form>dbConnection</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

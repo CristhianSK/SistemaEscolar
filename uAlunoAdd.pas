@@ -4,15 +4,19 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, uData, uAluno,
+  uConnection;
 
 type
-  TalunosAdd = class(TForm)
-    b: TPanel;
-    lblInputNome: TLabel;
+  TmodalAluno = class(TForm)
+    pnlAdicionarAluno: TPanel;
+    Label1: TLabel;
     lblInputCodigo: TLabel;
+    lblInputNome: TLabel;
+    btnModalAluno: TButton;
     inputCodigo: TEdit;
     inputNome: TEdit;
+    procedure btnModalAlunoClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -20,10 +24,28 @@ type
   end;
 
 var
-  alunosAdd: TalunosAdd;
+  modalAluno: TmodalAluno;
 
 implementation
 
 {$R *.dfm}
+
+procedure TmodalAluno.btnModalAlunoClick(Sender: TObject);
+begin
+var aluno : TAluno;
+var textoExibido : String;
+
+begin
+  if (inputNome.Text = '') or (inputCodigo.Text = '') then begin
+    ShowMessage('Preencha todos os campos!');
+  end else begin
+     aluno := TAluno.Create(strToInt(inputCodigo.Text), inputNome.Text);
+     textoExibido :=' Nome: ' + aluno.getNome + ' Código: ' + aluno.getCodigo.ToString ;
+   //  ltbxAlunos.Items.AddObject(textoExibido, aluno);
+  end;
+
+end;
+
+end;
 
 end.
