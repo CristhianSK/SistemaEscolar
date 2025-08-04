@@ -131,6 +131,9 @@
             <Form>pages</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="uPessoa.pas"/>
+        <DCCReference Include="uAluno.pas"/>
+        <DCCReference Include="uProfessor.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

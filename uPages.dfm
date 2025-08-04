@@ -32,16 +32,14 @@ object pages: Tpages
         ExplicitTop = 200
         ExplicitWidth = 185
         object lblTitAlunos: TLabel
-          AlignWithMargins = True
-          Left = 270
-          Top = 12
-          Width = 352
+          Left = 262
+          Top = 15
+          Width = 107
           Height = 26
           Margins.Left = 270
           Margins.Top = 12
-          Align = alClient
+          Align = alCustom
           Caption = 'Alunos Cadastrados'
-          ExplicitWidth = 147
         end
       end
       object pnlAlunos: TPanel
@@ -61,6 +59,65 @@ object pages: Tpages
           Align = alCustom
           ItemHeight = 15
           TabOrder = 0
+        end
+        object pnlAdicionarAluno: TPanel
+          AlignWithMargins = True
+          Left = 437
+          Top = 3
+          Width = 185
+          Height = 364
+          Align = alRight
+          BevelOuter = bvNone
+          Color = clSilver
+          ParentBackground = False
+          TabOrder = 1
+          ExplicitHeight = 318
+          object Label1: TLabel
+            Left = 35
+            Top = 6
+            Width = 116
+            Height = 15
+            Caption = 'Adicionar Novo aluno'
+          end
+          object lblInputCodigo: TLabel
+            Left = 32
+            Top = 72
+            Width = 39
+            Height = 15
+            Caption = 'C'#243'digo'
+          end
+          object lblInputNome: TLabel
+            Left = 32
+            Top = 136
+            Width = 33
+            Height = 15
+            Caption = 'Nome'
+          end
+          object btnModalAluno: TButton
+            Left = 46
+            Top = 205
+            Width = 75
+            Height = 25
+            Caption = 'Adicionar'
+            TabOrder = 0
+            OnClick = btnModalAlunoClick
+          end
+          object inputCodigo: TEdit
+            Left = 32
+            Top = 93
+            Width = 121
+            Height = 23
+            TabOrder = 1
+            TextHint = '999'
+          end
+          object inputNome: TEdit
+            Left = 32
+            Top = 157
+            Width = 121
+            Height = 23
+            TabOrder = 2
+            TextHint = 'joao'
+          end
         end
       end
     end
@@ -85,6 +142,14 @@ object pages: Tpages
           ItemHeight = 15
           TabOrder = 0
         end
+        object btnModalProfessor: TButton
+          Left = 288
+          Top = 333
+          Width = 75
+          Height = 25
+          Caption = 'Adicionar'
+          TabOrder = 1
+        end
       end
       object pnlTituloProf: TPanel
         Left = 0
@@ -96,17 +161,14 @@ object pages: Tpages
         TabOrder = 1
         ExplicitTop = 8
         object lblTitProfessores: TLabel
-          AlignWithMargins = True
           Left = 255
-          Top = 12
+          Top = 15
           Width = 128
           Height = 26
           Margins.Left = 255
           Margins.Top = 12
-          Align = alLeft
+          Align = alCustom
           Caption = 'Professores Cadastrados'
-          ExplicitLeft = 8
-          ExplicitHeight = 15
         end
       end
     end
