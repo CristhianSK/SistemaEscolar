@@ -16,7 +16,6 @@ begin
   Application.Initialize;
   Application.CreateForm(TdbConnection, dbConnection);
   Application.MainFormOnTaskbar := True;
-  Application.CreateForm(Thome, home);
   Application.CreateForm(Tpages, pages);
   Application.CreateForm(TmodalAluno, modalAluno);
   Application.Run;

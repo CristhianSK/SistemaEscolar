@@ -16,6 +16,7 @@ type
     FDConnection1: TFDConnection;
     qrySelectAllAlunos: TFDQuery;
     qryInsert: TFDQuery;
+    qryDadosAluno: TFDQuery;
     procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }

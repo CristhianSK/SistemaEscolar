@@ -17,10 +17,12 @@ type
     inputCodigo: TEdit;
     inputNome: TEdit;
     procedure btnModalAlunoClick(Sender: TObject);
+
   private
     { Private declarations }
   public
     { Public declarations }
+    indexAlunoSelecionado : integer;
   end;
 
 var
@@ -30,11 +32,13 @@ implementation
 
 {$R *.dfm}
 
+
+
+
 procedure TmodalAluno.btnModalAlunoClick(Sender: TObject);
 begin
 var aluno : TAluno;
 var textoExibido : String;
-
 dbConnection.qryInsert.SQL.Text:= 'INSERT INTO public.tb_alunos (aluno_id, aluno_nome) VALUES('+ inputCodigo.Text+ ', '+ QuotedStr(inputNome.Text) +  ')';
   if (inputNome.Text = '') or (inputCodigo.Text = '') then begin
     ShowMessage('Preencha todos os campos!');
@@ -47,5 +51,7 @@ dbConnection.qryInsert.SQL.Text:= 'INSERT INTO public.tb_alunos (aluno_id, aluno
 
 
 end;
+
+
 
 end.

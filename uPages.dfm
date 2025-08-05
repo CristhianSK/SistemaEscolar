@@ -30,8 +30,8 @@ object pages: Tpages
         BevelOuter = bvNone
         TabOrder = 0
         object lblTitAlunos: TLabel
-          Left = 262
-          Top = 15
+          Left = 270
+          Top = 20
           Width = 105
           Height = 15
           Margins.Left = 270
@@ -49,22 +49,42 @@ object pages: Tpages
         BevelOuter = bvNone
         TabOrder = 1
         object ltbxAlunos: TListBox
-          Left = 224
+          Left = 225
           Top = 6
-          Width = 201
+          Width = 222
           Height = 321
           Align = alCustom
           ItemHeight = 15
           TabOrder = 0
+          OnClick = ltbxAlunosClick
         end
         object btnModalAluno: TButton
-          Left = 288
+          Left = 300
           Top = 333
           Width = 75
           Height = 25
           Caption = 'Adicionar'
           TabOrder = 1
           OnClick = btnModalAlunoClick
+        end
+        object btnEditarAluno: TButton
+          Left = 219
+          Top = 333
+          Width = 75
+          Height = 25
+          Caption = 'Editar'
+          Enabled = False
+          TabOrder = 2
+          OnClick = btnEditarAlunoClick
+        end
+        object btnExcluirAluno: TButton
+          Left = 381
+          Top = 333
+          Width = 75
+          Height = 25
+          Caption = 'Excluir'
+          Enabled = False
+          TabOrder = 3
         end
       end
     end
@@ -89,7 +109,7 @@ object pages: Tpages
           TabOrder = 0
         end
         object btnModalProfessor: TButton
-          Left = 288
+          Left = 240
           Top = 333
           Width = 75
           Height = 25

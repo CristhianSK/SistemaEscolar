@@ -20,7 +20,6 @@ type
   end;
 
 var
-  home: Thome;
   pages: Tpages;
 
 implementation
@@ -34,7 +33,8 @@ implementation
 
 procedure Thome.abrirModalClick(Sender: TObject);
 begin
-  pages:= Tpages.Create(pages);
+
+  pages:= Tpages.Create(Self);
   pages.ShowModal;
   pages.free;
 end;

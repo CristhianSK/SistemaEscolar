@@ -16,19 +16,25 @@ object dbConnection: TdbConnection
       'Password=root'
       'Server=localhost'
       'DriverID=PG')
+    Connected = True
     Left = 224
     Top = 128
   end
   object qrySelectAllAlunos: TFDQuery
     Connection = FDConnection1
     SQL.Strings = (
-      'SELECT * FROM tb_alunos;')
+      'SELECT * FROM tb_alunos ORDER BY aluno_id;')
     Left = 480
     Top = 136
   end
   object qryInsert: TFDQuery
     Connection = FDConnection1
     Left = 480
-    Top = 272
+    Top = 304
+  end
+  object qryDadosAluno: TFDQuery
+    Connection = FDConnection1
+    Left = 480
+    Top = 368
   end
 end
