@@ -26,7 +26,7 @@ object dbConnection: TdbConnection
     Left = 480
     Top = 136
   end
-  object qryInsertAluno: TFDQuery
+  object qryInsert: TFDQuery
     Connection = FDConnection1
     Left = 480
     Top = 272

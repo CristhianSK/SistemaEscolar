@@ -29,14 +29,11 @@ object pages: Tpages
         Align = alTop
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitLeft = 208
-        ExplicitTop = 200
-        ExplicitWidth = 185
         object lblTitAlunos: TLabel
           Left = 262
           Top = 15
-          Width = 107
-          Height = 26
+          Width = 105
+          Height = 15
           Margins.Left = 270
           Margins.Top = 12
           Align = alCustom
@@ -51,7 +48,6 @@ object pages: Tpages
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 1
-        ExplicitWidth = 433
         object ltbxAlunos: TListBox
           Left = 224
           Top = 6
@@ -83,7 +79,6 @@ object pages: Tpages
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitWidth = 433
         object ListBox1: TListBox
           Left = 224
           Top = 6
@@ -110,12 +105,11 @@ object pages: Tpages
         Align = alTop
         BevelOuter = bvNone
         TabOrder = 1
-        ExplicitTop = 8
         object lblTitProfessores: TLabel
           Left = 255
           Top = 15
           Width = 128
-          Height = 26
+          Height = 15
           Margins.Left = 255
           Margins.Top = 12
           Align = alCustom

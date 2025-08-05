@@ -18,10 +18,6 @@ object home: Thome
     Height = 441
     Align = alClient
     TabOrder = 0
-    ExplicitLeft = 400
-    ExplicitTop = 280
-    ExplicitWidth = 185
-    ExplicitHeight = 41
     object Label1: TLabel
       Left = 224
       Top = 188

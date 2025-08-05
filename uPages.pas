@@ -47,12 +47,26 @@ begin
 
   alunoAdd:= TmodalAluno.Create(alunoAdd);
   alunoAdd.ShowModal;
+
+  ltbxAlunos.Items.Clear;
+
+
+  var getAlunos : TFDQuery;
+  getAlunos := dbConnection.qrySelectAllAlunos;
+  getAlunos.Open;
+  while not getAlunos.Eof do begin
+    ltbxAlunos.Items.Add(getAlunos.FieldByName('aluno_nome').AsString);
+    getAlunos.Next;
+  end;
+  getAlunos.Close;
+
+
+
   alunoAdd.free;
 
 
 
 end;
-
 
 procedure Tpages.FormCreate(Sender: TObject);
 begin

@@ -15,7 +15,7 @@ type
     FDPhysPgDriverLink1: TFDPhysPgDriverLink;
     FDConnection1: TFDConnection;
     qrySelectAllAlunos: TFDQuery;
-    qryInsertAluno: TFDQuery;
+    qryInsert: TFDQuery;
     procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }
