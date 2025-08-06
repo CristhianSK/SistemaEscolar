@@ -10,6 +10,7 @@ object modalAluno: TmodalAluno
   Font.Height = -12
   Font.Name = 'Segoe UI'
   Font.Style = []
+  OnShow = FormShow
   TextHeight = 15
   object pnlAdicionarAluno: TPanel
     AlignWithMargins = True
@@ -56,6 +57,7 @@ object modalAluno: TmodalAluno
       Top = 93
       Width = 121
       Height = 23
+      Enabled = False
       TabOrder = 1
       TextHint = '999'
     end
