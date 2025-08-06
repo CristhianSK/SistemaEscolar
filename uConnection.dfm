@@ -37,4 +37,11 @@ object dbConnection: TdbConnection
     Left = 480
     Top = 368
   end
+  object qryMaxAlunos: TFDQuery
+    Connection = FDConnection1
+    SQL.Strings = (
+      'SELECT MAX(aluno_id) AS total_alunos FROM tb_alunos;')
+    Left = 480
+    Top = 248
+  end
 end

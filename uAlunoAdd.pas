@@ -40,9 +40,9 @@ begin
 
 
   if indexAlunoSelecionado <> -1 then begin
-    dbConnection.qryInsert.SQL.Text:= 'UPDATE public.tb_alunos SET aluno_nome =' + QuotedStr(inputNome.text) + ' WHERE aluno_id = ' + (indexAlunoSelecionado + 1).ToString + ';';
+    dbConnection.qryInsert.SQL.Text:= 'UPDATE public.tb_alunos SET aluno_nome =' + QuotedStr(inputNome.text) + ' WHERE aluno_id = ' + (indexAlunoSelecionado).ToString + ';';
   end else begin
-    dbConnection.qryInsert.SQL.Text:= 'INSERT INTO public.tb_alunos (aluno_id, aluno_nome) VALUES('+ inputCodigo.Text+ ', '+ QuotedStr(inputNome.Text) +  ')';
+    dbConnection.qryInsert.SQL.Text:= 'INSERT INTO public.tb_alunos (aluno_nome) VALUES('+ QuotedStr(inputNome.Text) +  ')';
   end;
 
 
@@ -59,10 +59,12 @@ end;
 
 procedure TmodalAluno.FormShow(Sender: TObject);
 begin
-  inputCodigo.Text := (qntAlunos + 1).ToString;
+  dbConnection.qryMaxAlunos.Open;
+  qntAlunos := dbConnection.qryMaxAlunos.FieldByName('total_alunos').AsInteger;
+  inputCodigo.Text := (qntAlunos).ToString;
   if indexAlunoSelecionado <> -1 then begin
-      inputCodigo.Text := (indexAlunoSelecionado + 1).ToString;
-     inputNome.Text := nomeAlunoSelecionado;
+      inputCodigo.Text := (indexAlunoSelecionado).ToString;
+      inputNome.Text := nomeAlunoSelecionado;
   end;
 
   end;

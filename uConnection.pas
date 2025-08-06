@@ -17,6 +17,7 @@ type
     qrySelectAllAlunos: TFDQuery;
     qryInsert: TFDQuery;
     qryDadosAluno: TFDQuery;
+    qryMaxAlunos: TFDQuery;
     procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }

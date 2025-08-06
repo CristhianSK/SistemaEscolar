@@ -101,7 +101,7 @@ end;
 procedure Tpages.btnEditarAlunoClick(Sender: TObject);
 begin
   alunoAdd:= TmodalAluno.Create(Self);
-  alunoAdd.indexAlunoSelecionado := ltbxAlunos.ItemIndex;
+  alunoAdd.indexAlunoSelecionado := listaAlunos[ltbxAlunos.ItemIndex].getCodigo;
   alunoAdd.nomeAlunoSelecionado := listaAlunos[ltbxAlunos.ItemIndex].getNome;
   alunoAdd.ShowModal;
   btnEditarAluno.Enabled := False;
@@ -115,12 +115,11 @@ end;
 
 procedure Tpages.btnExcluirAlunoClick(Sender: TObject);
 begin
-   dbConnection.qryInsert.SQL.Text:= 'UPDATE public.tb_alunos SET ativo = false WHERE aluno_id = ' + (ltbxAlunos.ItemIndex + 1).ToString + ';';
+   dbConnection.qryInsert.SQL.Text:= 'UPDATE public.tb_alunos SET ativo = false WHERE aluno_id = ' + (listaAlunos[ltbxAlunos.ItemIndex].getCodigo).ToString + ';';
    dbConnection.qryInsert.ExecSQL;
    btnEditarAluno.Enabled := False;
    btnExcluirAluno.Enabled := False;
    listarAlunos;
-
 end;
 
 procedure Tpages.btnModalAlunoClick(Sender: TObject);
@@ -136,6 +135,7 @@ end;
 procedure Tpages.FormCreate(Sender: TObject);
 begin
   listaAlunos := TObjectList<TAluno>.Create();
+
   listarAlunos;
 end;
 
