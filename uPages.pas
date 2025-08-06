@@ -30,6 +30,7 @@ type
     procedure listarAlunos;
     procedure ltbxAlunosClick(Sender: TObject);
     procedure btnEditarAlunoClick(Sender: TObject);
+    procedure btnExcluirAlunoClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -66,9 +67,14 @@ begin
   getAlunos.Open;
 
   while not getAlunos.Eof do begin
-    aluno := TAluno.Create(getAlunos.FieldByName('aluno_id').AsInteger, getAlunos.FieldByName('aluno_nome').AsString);
-    listaAlunos.Add(aluno);
-    getAlunos.Next;
+    if getAlunos.FieldByName('ativo').AsBoolean then begin
+      aluno := TAluno.Create(getAlunos.FieldByName('aluno_id').AsInteger, getAlunos.FieldByName('aluno_nome').AsString);
+      listaAlunos.Add(aluno);
+      getAlunos.Next;
+    end else begin
+      getAlunos.Next;
+    end;
+
   end;
 
   i := 0;
@@ -105,6 +111,15 @@ begin
   listarAlunos;
 
 
+end;
+
+procedure Tpages.btnExcluirAlunoClick(Sender: TObject);
+begin
+   dbConnection.qryInsert.SQL.Text:= 'UPDATE public.tb_alunos SET ativo = false WHERE aluno_id = ' + (ltbxAlunos.ItemIndex + 1).ToString + ';';
+   dbConnection.qryInsert.ExecSQL;
+   btnEditarAluno.Enabled := False;
+   btnExcluirAluno.Enabled := False;
+   listarAlunos;
 
 end;
 

@@ -85,6 +85,7 @@ object pages: Tpages
           Caption = 'Excluir'
           Enabled = False
           TabOrder = 3
+          OnClick = btnExcluirAlunoClick
         end
       end
     end
