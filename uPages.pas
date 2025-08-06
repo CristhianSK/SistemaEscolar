@@ -79,8 +79,7 @@ begin
     i := i + 1;
   end;
 
-
-
+  lblTitAlunos.Caption := 'Alunos Cadastrados : ' + (listaAlunos.Count).ToString;
   getAlunos.Close;
 end;
 
@@ -95,10 +94,6 @@ end;
 
 procedure Tpages.btnEditarAlunoClick(Sender: TObject);
 begin
-
-
-  
-  
   alunoAdd:= TmodalAluno.Create(Self);
   alunoAdd.indexAlunoSelecionado := ltbxAlunos.ItemIndex;
   alunoAdd.nomeAlunoSelecionado := listaAlunos[ltbxAlunos.ItemIndex].getNome;
@@ -116,6 +111,7 @@ end;
 procedure Tpages.btnModalAlunoClick(Sender: TObject);
 begin
   alunoAdd:= TmodalAluno.Create(Self);
+  alunoAdd.indexAlunoSelecionado := -1;
   alunoAdd.qntAlunos := listaAlunos.Count;
   alunoAdd.ShowModal;
   alunoAdd.Free;
@@ -124,7 +120,6 @@ end;
 
 procedure Tpages.FormCreate(Sender: TObject);
 begin
-
   listaAlunos := TObjectList<TAluno>.Create();
   listarAlunos;
 end;

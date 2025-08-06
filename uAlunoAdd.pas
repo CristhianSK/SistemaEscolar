@@ -40,9 +40,9 @@ begin
 
 
   if indexAlunoSelecionado <> -1 then begin
-    dbConnection.qryInsert.SQL.Text:= 'INSERT INTO public.tb_alunos (aluno_id, aluno_nome) VALUES('+ inputCodigo.Text+ ', '+ QuotedStr(inputNome.Text) +  ')';
-  end else begin
     dbConnection.qryInsert.SQL.Text:= 'UPDATE public.tb_alunos SET aluno_nome =' + QuotedStr(inputNome.text) + ' WHERE aluno_id = ' + (indexAlunoSelecionado + 1).ToString + ';';
+  end else begin
+    dbConnection.qryInsert.SQL.Text:= 'INSERT INTO public.tb_alunos (aluno_id, aluno_nome) VALUES('+ inputCodigo.Text+ ', '+ QuotedStr(inputNome.Text) +  ')';
   end;
 
 
