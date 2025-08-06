@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.ExtCtrls, uAluno, uProfessor, uAlunoAdd, uData,
-  Vcl.StdCtrls,FireDAC.Comp.Client, uConnection, System.Generics.Collections;
+  Vcl.StdCtrls,FireDAC.Comp.Client, uConnection, System.Generics.Collections, uListas;
 
 type
   Tpages = class(TForm)
@@ -35,7 +35,7 @@ type
     { Private declarations }
   public
     { Public declarations }
-    listaAlunos : TObjectList<TAluno>;
+
 
 
   end;
@@ -114,12 +114,22 @@ begin
 end;
 
 procedure Tpages.btnExcluirAlunoClick(Sender: TObject);
+var alunoSelecionado : TAluno;
 begin
-   dbConnection.qryInsert.SQL.Text:= 'UPDATE public.tb_alunos SET ativo = false WHERE aluno_id = ' + (listaAlunos[ltbxAlunos.ItemIndex].getCodigo).ToString + ';';
+   alunoSelecionado := getAlunoById(listaAlunos[ltbxAlunos.ItemIndex].getCodigo);
+
+   dbConnection.qryInsert.SQL.Text:= 'UPDATE public.tb_alunos SET ativo = false WHERE aluno_id = ' + (alunoSelecionado.getCodigo).ToString + ';';
    dbConnection.qryInsert.ExecSQL;
+
+
    btnEditarAluno.Enabled := False;
    btnExcluirAluno.Enabled := False;
-   listarAlunos;
+
+
+   listaAlunos.remove(alunoSelecionado);
+
+   ltbxAlunos.items.Delete(ltbxAlunos.ItemIndex);
+
 end;
 
 procedure Tpages.btnModalAlunoClick(Sender: TObject);
@@ -134,8 +144,6 @@ end;
 
 procedure Tpages.FormCreate(Sender: TObject);
 begin
-  listaAlunos := TObjectList<TAluno>.Create();
-
   listarAlunos;
 end;
 

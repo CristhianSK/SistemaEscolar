@@ -8,7 +8,8 @@ uses
   uAluno in 'uAluno.pas',
   uProfessor in 'uProfessor.pas',
   uAlunoAdd in 'uAlunoAdd.pas' {modalAluno},
-  uConnection in 'uConnection.pas' {dbConnection: TDataModule};
+  uConnection in 'uConnection.pas' {dbConnection: TDataModule},
+  uListas in 'uListas.pas';
 
 {$R *.res}
 

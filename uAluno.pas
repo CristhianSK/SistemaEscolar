@@ -8,7 +8,6 @@ type TAluno = class(TPessoa)
   public
   constructor Create(aCodigo : Integer; aNome : String);
 
-
 end;
 
 implementation
