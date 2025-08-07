@@ -10,6 +10,7 @@ object modalAluno: TmodalAluno
   Font.Height = -12
   Font.Name = 'Segoe UI'
   Font.Style = []
+  OnCreate = FormCreate
   OnShow = FormShow
   TextHeight = 15
   object pnlAdicionarAluno: TPanel

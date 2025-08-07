@@ -28,6 +28,10 @@ type
     procedure btnModalAlunoClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure listarAlunos;
+    procedure puxarAlunos;
+    procedure editarAluno;
+    procedure excluirAluno;
+    procedure mostrarNovosAlunos;
     procedure ltbxAlunosClick(Sender: TObject);
     procedure btnEditarAlunoClick(Sender: TObject);
     procedure btnExcluirAlunoClick(Sender: TObject);
@@ -50,18 +54,10 @@ implementation
 {$R *.dfm}
 
 
-
-procedure Tpages.listarAlunos;
-var textoAdicionado : String;
+procedure Tpages.puxarAlunos;
 begin
   var getAlunos : TFDQuery;
   var aluno : TAluno;
-  var i : Integer;
-
-
-
-  ltbxAlunos.Items.Clear;
-  listaAlunos.Clear;
 
   getAlunos := dbConnection.qrySelectAllAlunos;
   getAlunos.Open;
@@ -77,6 +73,18 @@ begin
 
   end;
 
+  getAlunos.Close;
+  listarAlunos;
+end;
+
+
+procedure Tpages.listarAlunos;
+var textoAdicionado : String;
+var i : Integer;
+var aluno : TAluno;
+begin
+
+  ltbxAlunos.Clear;
   i := 0;
 
   for aluno in listaAlunos do begin
@@ -86,7 +94,52 @@ begin
   end;
 
   lblTitAlunos.Caption := 'Alunos Cadastrados : ' + (listaAlunos.Count).ToString;
-  getAlunos.Close;
+
+end;
+
+
+procedure Tpages.editarAluno;
+var alunoSelecionado : TAluno;
+begin
+alunoSelecionado := getAlunoById(listaAlunos[ltbxAlunos.ItemIndex].getCodigo);
+
+  btnEditarAluno.Enabled := False;
+  btnExcluirAluno.Enabled := False;
+
+  alunoAdd.indexAlunoSelecionado := ltbxAlunos.ItemIndex;
+
+  alunoAdd.ShowModal;
+  ltbxAlunos.Items[ltbxAlunos.ItemIndex] := alunoSelecionado.getCodigo.ToString + ' - ' + alunoSelecionado.getNome;
+
+end;
+
+
+procedure Tpages.excluirAluno;
+var alunoSelecionado : TAluno;
+begin
+   alunoSelecionado := getAlunoById(listaAlunos[ltbxAlunos.ItemIndex].getCodigo);
+   dbConnection.qryInsert.SQL.Text:= 'UPDATE public.tb_alunos SET ativo = false WHERE aluno_id = ' + (alunoSelecionado.getCodigo).ToString + ';';
+   dbConnection.qryInsert.ExecSQL;
+   btnEditarAluno.Enabled := False;
+   btnExcluirAluno.Enabled := False;
+   listaAlunos.remove(alunoSelecionado);
+   ltbxAlunos.items.Delete(ltbxAlunos.ItemIndex);
+end;
+
+
+procedure Tpages.mostrarNovosAlunos;
+var i: Integer;
+var adicionarAluno: Integer;
+begin
+
+  for i := 0 to alunoAdd.novosAlunos - 1 do
+  begin
+    adicionarAluno := listaAlunos.Count - alunoAdd.novosAlunos ;
+    ltbxAlunos.Items.Add(listaAlunos[adicionarAluno].getNome + 'a' );
+  end;
+
+
+
 end;
 
 procedure Tpages.ltbxAlunosClick(Sender: TObject);
@@ -98,64 +151,40 @@ begin
 
 end;
 
+
 procedure Tpages.btnEditarAlunoClick(Sender: TObject);
 var alunoSelecionado : TAluno;
 begin
-    alunoAdd:= TmodalAluno.Create(Self);
 
-
-   alunoSelecionado := getAlunoById(listaAlunos[ltbxAlunos.ItemIndex].getCodigo);
-
-
-   btnEditarAluno.Enabled := False;
-   btnExcluirAluno.Enabled := False;
-
-
-   alunoAdd.indexAlunoSelecionado := ltbxAlunos.ItemIndex;
-
-
-  alunoAdd.ShowModal;
-  ltbxAlunos.Items[ltbxAlunos.ItemIndex] := alunoSelecionado.getCodigo.ToString + ' - ' + alunoSelecionado.getNome;
+  alunoAdd:= TmodalAluno.Create(Self);
+  alunoAdd.btnModalAluno.Caption := 'Atualizar';
+  editarAluno;
   alunoAdd.free;
-
-
 
 end;
 
 procedure Tpages.btnExcluirAlunoClick(Sender: TObject);
-var alunoSelecionado : TAluno;
 begin
-   alunoSelecionado := getAlunoById(listaAlunos[ltbxAlunos.ItemIndex].getCodigo);
 
-   dbConnection.qryInsert.SQL.Text:= 'UPDATE public.tb_alunos SET ativo = false WHERE aluno_id = ' + (alunoSelecionado.getCodigo).ToString + ';';
-   dbConnection.qryInsert.ExecSQL;
-
-
-   btnEditarAluno.Enabled := False;
-   btnExcluirAluno.Enabled := False;
-
-
-   listaAlunos.remove(alunoSelecionado);
-
-   ltbxAlunos.items.Delete(ltbxAlunos.ItemIndex);
+   excluirAluno;
 
 end;
 
 procedure Tpages.btnModalAlunoClick(Sender: TObject);
 begin
+
   alunoAdd:= TmodalAluno.Create(Self);
   alunoAdd.indexAlunoSelecionado := -1;
   alunoAdd.qntAlunos := listaAlunos.Count;
   alunoAdd.ShowModal;
+  if alunoAdd.novosAlunos > 0 then mostrarNovosAlunos;
   alunoAdd.Free;
-  listarAlunos;
+
 end;
 
 procedure Tpages.FormCreate(Sender: TObject);
 begin
-  listarAlunos;
+  puxarAlunos;
 end;
-
-
 
 end.

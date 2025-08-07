@@ -18,6 +18,7 @@ type
     inputNome: TEdit;
     procedure btnModalAlunoClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
 
   private
     { Private declarations }
@@ -26,6 +27,7 @@ type
     indexAlunoSelecionado : integer;
     nomeAlunoSelecionado : String;
     qntAlunos: Integer;
+    novosAlunos: integer;
   end;
 
 implementation
@@ -38,16 +40,16 @@ implementation
 procedure TmodalAluno.btnModalAlunoClick(Sender: TObject);
 begin
 
-
   if indexAlunoSelecionado <> -1 then begin
     var aluno := getAlunoById(listaAlunos[indexAlunoSelecionado].getCodigo);
     dbConnection.qryInsert.SQL.Text:= 'UPDATE public.tb_alunos SET aluno_nome =' + QuotedStr(inputNome.text) + ' WHERE aluno_id = ' + aluno.getCodigo.ToString + ';';
     listaAlunos[indexAlunoSelecionado].setNome(inputNome.text);
     listaAlunos[indexAlunoSelecionado].setCodigo(StrToInt(inputCodigo.Text));
-
+    btnModalAluno.Caption := 'Adicionar';
 
   end else begin
     dbConnection.qryInsert.SQL.Text:= 'INSERT INTO public.tb_alunos (aluno_nome) VALUES('+ QuotedStr(inputNome.Text) +  ')';
+
   end;
 
 
@@ -55,20 +57,25 @@ begin
       ShowMessage('Preencha todos os campos!');
   end else begin
       dbConnection.qryInsert.ExecSQL;
-
-
       dbConnection.qryMaxAlunos.Close;
       dbConnection.qryMaxAlunos.Open;
       qntAlunos := dbConnection.qryMaxAlunos.FieldByName('total_alunos').AsInteger + 1;
       inputCodigo.Text := (qntAlunos).ToString;
       inputNome.Text := '';
+      novosAlunos := novosAlunos + 1;
   end;
 end;
 
 
 
+procedure TmodalAluno.FormCreate(Sender: TObject);
+begin
+  novosAlunos := 0;
+end;
+
 procedure TmodalAluno.FormShow(Sender: TObject);
 begin
+
   dbConnection.qryMaxAlunos.Open;
   qntAlunos := dbConnection.qryMaxAlunos.FieldByName('total_alunos').AsInteger + 1;
   inputCodigo.Text := (qntAlunos).ToString;
