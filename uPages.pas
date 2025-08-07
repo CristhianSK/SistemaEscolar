@@ -99,16 +99,25 @@ begin
 end;
 
 procedure Tpages.btnEditarAlunoClick(Sender: TObject);
+var alunoSelecionado : TAluno;
 begin
-  alunoAdd:= TmodalAluno.Create(Self);
-  alunoAdd.indexAlunoSelecionado := listaAlunos[ltbxAlunos.ItemIndex].getCodigo;
-  alunoAdd.nomeAlunoSelecionado := listaAlunos[ltbxAlunos.ItemIndex].getNome;
+    alunoAdd:= TmodalAluno.Create(Self);
+
+
+   alunoSelecionado := getAlunoById(listaAlunos[ltbxAlunos.ItemIndex].getCodigo);
+
+
+   btnEditarAluno.Enabled := False;
+   btnExcluirAluno.Enabled := False;
+
+
+   alunoAdd.indexAlunoSelecionado := ltbxAlunos.ItemIndex;
+
+
   alunoAdd.ShowModal;
-  btnEditarAluno.Enabled := False;
-  btnExcluirAluno.Enabled := False;
+  ltbxAlunos.Items[ltbxAlunos.ItemIndex] := alunoSelecionado.getCodigo.ToString + ' - ' + alunoSelecionado.getNome;
   alunoAdd.free;
 
-  listarAlunos;
 
 
 end;

@@ -40,18 +40,28 @@ begin
 
 
   if indexAlunoSelecionado <> -1 then begin
-    dbConnection.qryInsert.SQL.Text:= 'UPDATE public.tb_alunos SET aluno_nome =' + QuotedStr(inputNome.text) + ' WHERE aluno_id = ' + (indexAlunoSelecionado).ToString + ';';
+    var aluno := getAlunoById(listaAlunos[indexAlunoSelecionado].getCodigo);
+    dbConnection.qryInsert.SQL.Text:= 'UPDATE public.tb_alunos SET aluno_nome =' + QuotedStr(inputNome.text) + ' WHERE aluno_id = ' + aluno.getCodigo.ToString + ';';
+    listaAlunos[indexAlunoSelecionado].setNome(inputNome.text);
+    listaAlunos[indexAlunoSelecionado].setCodigo(StrToInt(inputCodigo.Text));
+
+
   end else begin
     dbConnection.qryInsert.SQL.Text:= 'INSERT INTO public.tb_alunos (aluno_nome) VALUES('+ QuotedStr(inputNome.Text) +  ')';
   end;
 
 
   if (inputNome.Text = '') or (inputCodigo.Text = '') then begin
-    ShowMessage('Preencha todos os campos!');
+      ShowMessage('Preencha todos os campos!');
   end else begin
-     dbConnection.qryInsert.ExecSQL;
-     inputCodigo.Text := '';
-     inputNome.Text := '';
+      dbConnection.qryInsert.ExecSQL;
+
+
+      dbConnection.qryMaxAlunos.Close;
+      dbConnection.qryMaxAlunos.Open;
+      qntAlunos := dbConnection.qryMaxAlunos.FieldByName('total_alunos').AsInteger + 1;
+      inputCodigo.Text := (qntAlunos).ToString;
+      inputNome.Text := '';
   end;
 end;
 
@@ -60,11 +70,13 @@ end;
 procedure TmodalAluno.FormShow(Sender: TObject);
 begin
   dbConnection.qryMaxAlunos.Open;
-  qntAlunos := dbConnection.qryMaxAlunos.FieldByName('total_alunos').AsInteger;
+  qntAlunos := dbConnection.qryMaxAlunos.FieldByName('total_alunos').AsInteger + 1;
   inputCodigo.Text := (qntAlunos).ToString;
   if indexAlunoSelecionado <> -1 then begin
-      inputCodigo.Text := (indexAlunoSelecionado).ToString;
-      inputNome.Text := nomeAlunoSelecionado;
+      var aluno := getAlunoById(listaAlunos[indexAlunoSelecionado].getCodigo);
+      inputCodigo.Text := aluno.getCodigo.ToString ;
+      inputNome.Text := aluno.getNome;
+
   end;
 
   end;
