@@ -9,7 +9,9 @@ uses
   uProfessor in 'uProfessor.pas',
   uAlunoAdd in 'uAlunoAdd.pas' {modalAluno},
   uConnection in 'uConnection.pas' {dbConnection: TDataModule},
-  uListas in 'uListas.pas';
+  uListas in 'uListas.pas',
+  uTurma in 'uTurma.pas',
+  uTurmaAdd in 'uTurmaAdd.pas' {modalTurma};
 
 {$R *.res}
 

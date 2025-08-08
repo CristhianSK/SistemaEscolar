@@ -3,7 +3,7 @@ object pages: Tpages
   Top = 0
   Caption = 'Informa'#231#245'es'
   ClientHeight = 441
-  ClientWidth = 624
+  ClientWidth = 611
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -17,7 +17,7 @@ object pages: Tpages
     Top = 0
     Width = 633
     Height = 441
-    ActivePage = Alunos
+    ActivePage = tabTurmas
     TabOrder = 0
     object Alunos: TTabSheet
       Caption = 'Alunos'
@@ -30,7 +30,7 @@ object pages: Tpages
         BevelOuter = bvNone
         TabOrder = 0
         object lblTitAlunos: TLabel
-          Left = 270
+          Left = 278
           Top = 20
           Width = 105
           Height = 15
@@ -48,6 +48,8 @@ object pages: Tpages
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 1
+        ExplicitLeft = 64
+        ExplicitTop = 65
         object ltbxAlunos: TListBox
           Left = 225
           Top = 6
@@ -92,7 +94,7 @@ object pages: Tpages
     object tabProfessores: TTabSheet
       Caption = 'Professores'
       ImageIndex = 1
-      object pnlProfessores: TPanel
+      object Panel1: TPanel
         Left = 0
         Top = 41
         Width = 625
@@ -100,25 +102,49 @@ object pages: Tpages
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
-        object ListBox1: TListBox
-          Left = 224
+        ExplicitLeft = 64
+        ExplicitTop = 65
+        object ltbxProfessores: TListBox
+          Left = 225
           Top = 6
-          Width = 201
+          Width = 222
           Height = 321
           Align = alCustom
           ItemHeight = 15
           TabOrder = 0
+          OnClick = ltbxAlunosClick
         end
         object btnModalProfessor: TButton
-          Left = 240
+          Left = 300
           Top = 333
           Width = 75
           Height = 25
           Caption = 'Adicionar'
           TabOrder = 1
+          OnClick = btnModalAlunoClick
+        end
+        object btnEditarProfessor: TButton
+          Left = 219
+          Top = 333
+          Width = 75
+          Height = 25
+          Caption = 'Editar'
+          Enabled = False
+          TabOrder = 2
+          OnClick = btnEditarAlunoClick
+        end
+        object btnExcluirProfessor: TButton
+          Left = 381
+          Top = 333
+          Width = 75
+          Height = 25
+          Caption = 'Excluir'
+          Enabled = False
+          TabOrder = 3
+          OnClick = btnExcluirAlunoClick
         end
       end
-      object pnlTituloProf: TPanel
+      object Panel2: TPanel
         Left = 0
         Top = 0
         Width = 625
@@ -126,12 +152,13 @@ object pages: Tpages
         Align = alTop
         BevelOuter = bvNone
         TabOrder = 1
+        ExplicitTop = 8
         object lblTitProfessores: TLabel
-          Left = 255
-          Top = 15
+          Left = 262
+          Top = 20
           Width = 128
           Height = 15
-          Margins.Left = 255
+          Margins.Left = 270
           Margins.Top = 12
           Align = alCustom
           Caption = 'Professores Cadastrados'
@@ -141,6 +168,84 @@ object pages: Tpages
     object tabDisciplinas: TTabSheet
       Caption = 'Disciplinas'
       ImageIndex = 2
+    end
+    object tabTurmas: TTabSheet
+      Caption = 'Turmas'
+      ImageIndex = 3
+      object Panel3: TPanel
+        Left = 0
+        Top = 41
+        Width = 625
+        Height = 370
+        Align = alClient
+        BevelOuter = bvNone
+        TabOrder = 0
+        ExplicitLeft = 64
+        ExplicitTop = 65
+        object ltbxTurmas: TListBox
+          Left = 225
+          Top = 6
+          Width = 222
+          Height = 321
+          Align = alCustom
+          ItemHeight = 15
+          TabOrder = 0
+          OnClick = ltbxTurmasClick
+        end
+        object btnModalTurma: TButton
+          Left = 300
+          Top = 333
+          Width = 75
+          Height = 25
+          Caption = 'Adicionar'
+          TabOrder = 1
+          OnClick = btnModalTurmaClick
+        end
+        object btnEditarTurma: TButton
+          Left = 219
+          Top = 333
+          Width = 75
+          Height = 25
+          Caption = 'Editar'
+          Enabled = False
+          TabOrder = 2
+          OnClick = btnEditarTurmaClick
+        end
+        object btnExcluirTurma: TButton
+          Left = 381
+          Top = 333
+          Width = 75
+          Height = 25
+          Caption = 'Excluir'
+          Enabled = False
+          TabOrder = 3
+          OnClick = btnExcluirTurmaClick
+        end
+      end
+      object Panel4: TPanel
+        Left = 0
+        Top = 0
+        Width = 625
+        Height = 41
+        Align = alTop
+        BevelOuter = bvNone
+        TabOrder = 1
+        ExplicitTop = 8
+        object lblTitTurmas: TLabel
+          Left = 278
+          Top = 20
+          Width = 107
+          Height = 15
+          Margins.Left = 270
+          Margins.Top = 12
+          Align = alCustom
+          Caption = 'Turmas Cadastradas'
+        end
+      end
+    end
+    object tabMatriculas: TTabSheet
+      Caption = 'Matr'#237'culas'
+      ImageIndex = 4
     end
   end
 end

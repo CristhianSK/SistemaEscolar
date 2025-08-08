@@ -4,7 +4,7 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.ExtCtrls, uAluno, uProfessor, uAlunoAdd, uData,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.ExtCtrls, uAluno, uProfessor, uTurma, uAlunoAdd, uTurmaAdd, uData,
   Vcl.StdCtrls,FireDAC.Comp.Client, uConnection, System.Generics.Collections, uListas;
 
 type
@@ -17,14 +17,25 @@ type
     pnlTitulo: TPanel;
     pnlAlunos: TPanel;
     ltbxAlunos: TListBox;
-    pnlProfessores: TPanel;
-    ListBox1: TListBox;
-    pnlTituloProf: TPanel;
-    lblTitProfessores: TLabel;
-    btnModalProfessor: TButton;
     btnModalAluno: TButton;
     btnEditarAluno: TButton;
     btnExcluirAluno: TButton;
+    Panel1: TPanel;
+    ltbxProfessores: TListBox;
+    btnModalProfessor: TButton;
+    btnEditarProfessor: TButton;
+    btnExcluirProfessor: TButton;
+    Panel2: TPanel;
+    lblTitProfessores: TLabel;
+    tabTurmas: TTabSheet;
+    tabMatriculas: TTabSheet;
+    Panel3: TPanel;
+    ltbxTurmas: TListBox;
+    btnModalTurma: TButton;
+    btnEditarTurma: TButton;
+    btnExcluirTurma: TButton;
+    Panel4: TPanel;
+    lblTitTurmas: TLabel;
     procedure btnModalAlunoClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure listarAlunos;
@@ -32,9 +43,20 @@ type
     procedure editarAluno;
     procedure excluirAluno;
     procedure mostrarNovosAlunos;
+
+    procedure listarTurmas;
+    procedure puxarTurmas;
+    procedure editarTurma;
+    procedure excluirTurma;
+    procedure mostrarNovasTurmas;
+
     procedure ltbxAlunosClick(Sender: TObject);
     procedure btnEditarAlunoClick(Sender: TObject);
     procedure btnExcluirAlunoClick(Sender: TObject);
+    procedure ltbxTurmasClick(Sender: TObject);
+    procedure btnEditarTurmaClick(Sender: TObject);
+    procedure btnModalTurmaClick(Sender: TObject);
+    procedure btnExcluirTurmaClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -47,12 +69,18 @@ type
 var
   pages: Tpages;
   alunoAdd: TmodalAluno;
+  turmaAdd: TmodalTurma;
 
 
 implementation
 
 {$R *.dfm}
 
+
+////// COMEÇO DO CODIGO ALUNOS//////
+////// COMEÇO DO CODIGO ALUNOS//////
+////// COMEÇO DO CODIGO ALUNOS//////
+//////FUNÇÕES /////
 
 procedure Tpages.puxarAlunos;
 begin
@@ -141,7 +169,109 @@ begin
 
 end;
 
+// ****** FIM DAS FUNÇÕES ALUNOS ******
+// ****** FIM DAS FUNÇÕES ALUNOS ******
+// ****** FIM DAS FUNÇÕES ALUNOS ******
+
+
+// ****** INICIO DAS FUNÇÕES TURMAS ******
+// ****** INICIO DAS FUNÇÕES TURMAS ******
+// ****** INICIO DAS FUNÇÕES TURMAS ******
+
+procedure Tpages.puxarTurmas;
+begin
+  var getTurmas : TFDQuery;
+  var turma : TTurma;
+
+  getTurmas := dbConnection.qrySelectAllTurmas;
+  getTurmas.Open;
+
+  while not getTurmas.Eof do begin
+    if getTurmas.FieldByName('ativo').AsBoolean then begin
+      turma := TTurma.Create(getTurmas.FieldByName('turma_id').AsInteger, getTurmas.FieldByName('turma_nome').AsString,getTurmas.FieldByName('turma_id_professor').AsInteger,getTurmas.FieldByName('turma_id_disciplina').AsInteger);
+      listaTurmas.Add(turma);
+      getTurmas.Next;
+    end else begin
+      getTurmas.Next;
+    end;
+
+  end;
+
+  getTurmas.Close;
+  listarTurmas;
+end;
+
+
+procedure Tpages.listarTurmas;
+var textoAdicionado : String;
+var i : Integer;
+var turma : TTurma;
+begin
+
+  ltbxTurmas.Clear;
+  i := 0;
+
+  for turma in listaTurmas do begin
+    textoAdicionado := listaTurmas[i].getCodigo.ToString + ' - ' + listaTurmas[i].getNome + ' - Professor ID: ' + listaTurmas[i].getCodigoProfessor.ToString + ' - Materia ID: ' + listaTurmas[i].getCodigoDisciplina.ToString;
+    ltbxTurmas.Items.Add(textoAdicionado);
+    i := i + 1;
+  end;
+
+  lblTitTurmas.Caption := 'Turmas Cadastradas : ' + (listaTurmas.Count).ToString;
+
+end;
+
+
+procedure Tpages.editarTurma;
+var turmaSelecionado : TTurma;
+begin
+
+  turmaSelecionado := getTurmaById(listaTurmas[ltbxTurmas.ItemIndex].getCodigo);
+
+  btnEditarTurma.Enabled := False;
+  btnExcluirTurma.Enabled := False;
+
+  turmaAdd.indexTurmaSelecionado := ltbxTurmas.ItemIndex;
+
+  turmaAdd.ShowModal;
+  ltbxTurmas.Items[ltbxTurmas.ItemIndex] := turmaSelecionado.getCodigo.ToString + ' - ' + turmaSelecionado.getNome + ' - Professor ID: ' + turmaSelecionado.getCodigoProfessor.ToString + ' - Materia ID: ' + turmaSelecionado.getCodigoDisciplina.ToString;
+
+
+
+end;
+
+
+procedure Tpages.excluirTurma;
+var turmaSelecionado : TTurma;
+begin
+   turmaSelecionado := getTurmaById(listaTurmas[ltbxTurmas.ItemIndex].getCodigo);
+   dbConnection.qryInsert.SQL.Text:= 'UPDATE public.tb_turmas SET ativo = false WHERE turma_id = ' + (turmaSelecionado.getCodigo).ToString + ';';
+   dbConnection.qryInsert.ExecSQL;
+   btnEditarTurma.Enabled := False;
+   btnExcluirTurma.Enabled := False;
+   listaTurmas.remove(turmaSelecionado);
+   ltbxTurmas.items.Delete(ltbxTurmas.ItemIndex);
+end;
+
+
+procedure Tpages.mostrarNovasTurmas;
+var i: Integer;
+var adicionarTurma: Integer;
+begin
+
+  for i := 0 to turmaAdd.novasTurmas - 1 do
+  begin
+    adicionarTurma := listaTurmas.Count - (turmaAdd.novasTurmas) + i ;
+    ltbxTurmas.Items.Add(listaTurmas[adicionarTurma].getCodigo.ToString + ' - ' + listaTurmas[adicionarTurma].getNome + ' - Professor ID: ' + listaTurmas[adicionarTurma].getCodigoProfessor.ToString + ' - Materia ID: ' + listaTurmas[adicionarTurma].getCodigoDisciplina.ToString);
+  end;
+
+end;
+
+
+
+// ****** FIM DAS FUNÇÕES******
 // ****** FIM DAS FUNÇÕES ******
+// ****** FIM DAS FUNÇÕES******
 
 procedure Tpages.ltbxAlunosClick(Sender: TObject);
 begin
@@ -165,6 +295,7 @@ begin
 
 end;
 
+
 procedure Tpages.btnExcluirAlunoClick(Sender: TObject);
 begin
 
@@ -172,9 +303,9 @@ begin
 
 end;
 
+
 procedure Tpages.btnModalAlunoClick(Sender: TObject);
 begin
-
   alunoAdd:= TmodalAluno.Create(Self);
   alunoAdd.indexAlunoSelecionado := -1;
   alunoAdd.qntAlunos := listaAlunos.Count;
@@ -185,9 +316,58 @@ begin
 
 end;
 
+
+
+
+////// FIM DO CODIGO ALUNOS//////
+////// FIM DO CODIGO ALUNOS//////
+////// FIM DO CODIGO ALUNOS//////
+////// FIM DO CODIGO ALUNOS//////
+
+ procedure Tpages.btnEditarTurmaClick(Sender: TObject);
+begin
+  turmaAdd:= TmodalTurma.Create(Self);
+  turmaAdd.btnModalTurma.Caption := 'Atualizar';
+  editarTurma;
+  turmaAdd.free;
+
+end;
+
+
+ procedure Tpages.btnModalTurmaClick(Sender: TObject);
+begin
+  turmaAdd:= TmodalTurma.Create(Self);
+  turmaAdd.indexTurmaSelecionado := -1;
+  turmaAdd.qntTurmas := listaTurmas.Count;
+  turmaAdd.ShowModal;
+  turmaAdd.Free;
+
+  if turmaAdd.novasTurmas > 0 then mostrarNovasTurmas;
+
+end;
+
+
+procedure Tpages.btnExcluirTurmaClick(Sender: TObject);
+begin
+   excluirTurma;
+end;
+
+
+procedure Tpages.ltbxTurmasClick(Sender: TObject);
+begin
+
+   if ltbxTurmas.ItemIndex <> -1 then begin
+      btnEditarTurma.Enabled := True;
+      btnExcluirTurma.Enabled := True;
+   end;
+
+end;
+
+
 procedure Tpages.FormCreate(Sender: TObject);
 begin
   puxarAlunos;
+  puxarTurmas;
 end;
 
 end.

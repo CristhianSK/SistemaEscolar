@@ -34,9 +34,6 @@ implementation
 
 {$R *.dfm}
 
-
-
-
 procedure TmodalAluno.btnModalAlunoClick(Sender: TObject);
 begin
 
@@ -46,7 +43,6 @@ begin
     listaAlunos[indexAlunoSelecionado].setNome(inputNome.text);
     listaAlunos[indexAlunoSelecionado].setCodigo(StrToInt(inputCodigo.Text));
     btnModalAluno.Caption := 'Adicionar';
-
   end else begin
     dbConnection.qryInsert.SQL.Text:= 'INSERT INTO public.tb_alunos (aluno_nome) VALUES('+ QuotedStr(inputNome.Text) +  ')';
     listaAlunos.Add(TAluno.Create(StrToInt(inputCodigo.Text), inputNome.Text));
@@ -87,5 +83,6 @@ begin
   end;
 
   end;
+
 
 end.
