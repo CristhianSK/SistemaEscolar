@@ -12,15 +12,15 @@ object pages: Tpages
   Font.Style = []
   OnCreate = FormCreate
   TextHeight = 15
-  object PageControl1: TPageControl
+  object paginas: TPageControl
     Left = -8
     Top = 0
     Width = 633
     Height = 441
-    ActivePage = TabSheet1
+    ActivePage = Alunos
     TabOrder = 0
-    object TabSheet1: TTabSheet
-      Caption = 'TabSheet1'
+    object Alunos: TTabSheet
+      Caption = 'Alunos'
       object pnlTitulo: TPanel
         Left = 0
         Top = 0
@@ -89,8 +89,8 @@ object pages: Tpages
         end
       end
     end
-    object TabSheet2: TTabSheet
-      Caption = 'TabSheet2'
+    object tabProfessores: TTabSheet
+      Caption = 'Professores'
       ImageIndex = 1
       object pnlProfessores: TPanel
         Left = 0
@@ -138,8 +138,8 @@ object pages: Tpages
         end
       end
     end
-    object TabSheet3: TTabSheet
-      Caption = 'TabSheet3'
+    object tabDisciplinas: TTabSheet
+      Caption = 'Disciplinas'
       ImageIndex = 2
     end
   end

@@ -9,10 +9,10 @@ uses
 
 type
   Tpages = class(TForm)
-    PageControl1: TPageControl;
-    TabSheet1: TTabSheet;
-    TabSheet2: TTabSheet;
-    TabSheet3: TTabSheet;
+    paginas: TPageControl;
+    Alunos: TTabSheet;
+    tabProfessores: TTabSheet;
+    tabDisciplinas: TTabSheet;
     lblTitAlunos: TLabel;
     pnlTitulo: TPanel;
     pnlAlunos: TPanel;
@@ -101,7 +101,8 @@ end;
 procedure Tpages.editarAluno;
 var alunoSelecionado : TAluno;
 begin
-alunoSelecionado := getAlunoById(listaAlunos[ltbxAlunos.ItemIndex].getCodigo);
+
+  alunoSelecionado := getAlunoById(listaAlunos[ltbxAlunos.ItemIndex].getCodigo);
 
   btnEditarAluno.Enabled := False;
   btnExcluirAluno.Enabled := False;
@@ -134,16 +135,17 @@ begin
 
   for i := 0 to alunoAdd.novosAlunos - 1 do
   begin
-    adicionarAluno := listaAlunos.Count - alunoAdd.novosAlunos ;
-    ltbxAlunos.Items.Add(listaAlunos[adicionarAluno].getNome + 'a' );
+    adicionarAluno := listaAlunos.Count - (alunoAdd.novosAlunos) + i ;
+    ltbxAlunos.Items.Add(listaAlunos[adicionarAluno].getCodigo.ToString + ' - ' + listaAlunos[adicionarAluno].getNome );
   end;
-
-
 
 end;
 
+// ****** FIM DAS FUNÇÕES ******
+
 procedure Tpages.ltbxAlunosClick(Sender: TObject);
 begin
+
    if ltbxAlunos.ItemIndex <> -1 then begin
       btnEditarAluno.Enabled := True;
       btnExcluirAluno.Enabled := True;
@@ -177,8 +179,9 @@ begin
   alunoAdd.indexAlunoSelecionado := -1;
   alunoAdd.qntAlunos := listaAlunos.Count;
   alunoAdd.ShowModal;
-  if alunoAdd.novosAlunos > 0 then mostrarNovosAlunos;
   alunoAdd.Free;
+
+  if alunoAdd.novosAlunos > 0 then mostrarNovosAlunos;
 
 end;
 

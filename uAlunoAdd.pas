@@ -49,7 +49,7 @@ begin
 
   end else begin
     dbConnection.qryInsert.SQL.Text:= 'INSERT INTO public.tb_alunos (aluno_nome) VALUES('+ QuotedStr(inputNome.Text) +  ')';
-
+    listaAlunos.Add(TAluno.Create(StrToInt(inputCodigo.Text), inputNome.Text));
   end;
 
 
