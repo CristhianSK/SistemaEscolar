@@ -19,6 +19,7 @@ type
     slcAlunos: TComboBox;
     slcTurmas: TComboBox;
     procedure btnModalMatriculaClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
   public
@@ -70,6 +71,11 @@ begin
     slcTurmas.ItemIndex := -1;
     novosMatriculas := novosMatriculas + 1;
 
+end;
+
+procedure TmodalMatricula.FormCreate(Sender: TObject);
+begin
+  novosMatriculas := 0;
 end;
 
 end.

@@ -85,10 +85,6 @@ procedure TmodalTurma.FormCreate(Sender: TObject);
 
 begin
   novasTurmas := 0;
-
-
-
-
   end;
 
 procedure TmodalTurma.FormShow(Sender: TObject);
