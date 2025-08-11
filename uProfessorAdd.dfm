@@ -1,7 +1,7 @@
-object modalTurma: TmodalTurma
+object modalProfessor: TmodalProfessor
   Left = 0
   Top = 0
-  Caption = 'Turma'
+  Caption = 'modalProfessor'
   ClientHeight = 441
   ClientWidth = 624
   Color = clBtnFace
@@ -13,7 +13,7 @@ object modalTurma: TmodalTurma
   OnCreate = FormCreate
   OnShow = FormShow
   TextHeight = 15
-  object pnlAdicionarTurma: TPanel
+  object pnlAdicionarProfessor: TPanel
     AlignWithMargins = True
     Left = 221
     Top = 59
@@ -24,52 +24,45 @@ object modalTurma: TmodalTurma
     ParentBackground = False
     TabOrder = 0
     object Label1: TLabel
-      Left = 35
-      Top = 6
-      Width = 120
+      Left = 27
+      Top = 0
+      Width = 135
       Height = 15
-      Caption = 'Adicionar Nova Turma'
+      Caption = 'Adicionar Novo Professor'
     end
     object lblInputCodigo: TLabel
       Left = 32
-      Top = 40
+      Top = 72
       Width = 39
       Height = 15
       Caption = 'C'#243'digo'
     end
     object lblInputNome: TLabel
       Left = 32
-      Top = 88
+      Top = 127
       Width = 33
       Height = 15
       Caption = 'Nome'
     end
-    object lblInputProf: TLabel
-      Left = 17
-      Top = 138
-      Width = 49
-      Height = 15
-      Caption = 'Professor'
-    end
-    object lblInputDisc: TLabel
+    object lblInputCpf: TLabel
       Left = 32
-      Top = 200
-      Width = 51
+      Top = 187
+      Width = 21
       Height = 15
-      Caption = 'Disciplina'
+      Caption = 'CPF'
     end
-    object btnModalTurma: TButton
+    object btnModalProfessor: TButton
       Left = 54
       Top = 269
       Width = 75
       Height = 25
       Caption = 'Adicionar'
       TabOrder = 0
-      OnClick = btnModalTurmaClick
+      OnClick = btnModalProfessorClick
     end
     object inputCodigo: TEdit
       Left = 32
-      Top = 61
+      Top = 93
       Width = 121
       Height = 23
       Enabled = False
@@ -78,35 +71,19 @@ object modalTurma: TmodalTurma
     end
     object inputNome: TEdit
       Left = 32
-      Top = 109
+      Top = 148
       Width = 121
       Height = 23
       TabOrder = 2
       TextHint = 'joao'
     end
-    object inputCodigoProf: TEdit
-      Left = 72
-      Top = 138
+    object inputCpf: TEdit
+      Left = 32
+      Top = 208
       Width = 121
       Height = 23
       TabOrder = 3
-      TextHint = 'carlos'
-    end
-    object inputCodigoDisc: TEdit
-      Left = 32
-      Top = 221
-      Width = 121
-      Height = 23
-      TabOrder = 4
-      TextHint = 'matem'#225'tica'
-    end
-    object slcProfessores: TComboBox
-      Left = 32
-      Top = 171
-      Width = 121
-      Height = 23
-      TabOrder = 5
-      Text = 'slcProfessores'
+      TextHint = '12345678901'
     end
   end
 end

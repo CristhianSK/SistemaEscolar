@@ -151,6 +151,10 @@
             <Form>modalTurma</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="uProfessorAdd.pas">
+            <Form>modalProfessor</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

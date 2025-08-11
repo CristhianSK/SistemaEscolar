@@ -10,6 +10,11 @@ type TProfessor = class(TPessoa)
   public
   constructor Create(aCodigo : Integer; aNome : String; aCpf : String);
 
+
+  function getCpf : String;
+  procedure setCpf(aCpf: String);
+
+
 end;
 
 
@@ -22,5 +27,18 @@ begin
   inherited Create(aCodigo, aNome);
   self.cpf := aCpf;
 end;
+
+
+  function TProfessor.getCpf: String;
+  begin
+      Result := self.cpf;
+  end;
+
+  procedure TProfessor.setCpf(aCpf: String);
+  begin
+      self.cpf := aCpf;
+  end;
+
+
 
 end.

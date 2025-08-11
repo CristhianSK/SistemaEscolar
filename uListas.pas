@@ -3,13 +3,17 @@ unit uListas;
 interface
 
 uses
-  System.SysUtils, System.Generics.Collections, System.Variants, System.Classes, uData, uAluno, uTurma,
+  System.SysUtils, System.Generics.Collections, System.Variants, System.Classes, uData, uAluno, uTurma, uProfessor,uDisciplina,
   FireDAC.Comp.Client, uConnection;
 
   var listaAlunos : TObjectList<TAluno>;
+  var listaProfessores : TObjectList<TProfessor>;
+  var listaDisciplinas : TObjectList<TDisciplinas>;
   var listaTurmas : TObjectList<TTurma>;
 
   function getAlunoById(id: Integer): TAluno;
+  function getProfessorById(id: Integer): TProfessor;
+  function getDisciplinaById(id: Integer): TDisciplina;
   function getTurmaById(id: Integer): TTurma;
 
 implementation
@@ -38,13 +42,40 @@ begin
   end;
 end;
 
+function getProfessorById(ID: Integer): TProfessor;
+var professor : TProfessor;
+begin
+  for professor in listaProfessores do begin
+    if (professor.getCodigo <> id) then begin
+    end else begin
+      result:= professor;
+      break;
+    end;
+  end;
+end;
+
+
+
+function getDisciplinaById(ID: Integer): TDisciplina;
+var disciplina : TDisciplina;
+begin
+  for disciplina in listaDisciplinas do begin
+    if (disciplina.getCodigo <> id) then begin
+    end else begin
+      result:= disciplina;
+      break;
+    end;
+  end;
+end;
 
 
 initialization
   listaAlunos := TObjectList<TAluno>.Create;
   listaTurmas := TObjectList<TTurma>.Create;
-
+  listaProfessores := TObjectList<TProfessor>.Create;
+  listaDisciplinas := TObjectList<TDisciplina>.Create;
 finalization
   listaAlunos.Free;
   listaTurmas.Free;
+  listaProfessores.Free;
 end.

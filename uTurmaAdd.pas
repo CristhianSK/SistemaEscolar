@@ -21,6 +21,7 @@ type
     lblInputProf: TLabel;
     inputCodigoDisc: TEdit;
     lblInputDisc: TLabel;
+    slcProfessores: TComboBox;
     procedure btnModalTurmaClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -44,33 +45,36 @@ implementation
 procedure TmodalTurma.btnModalTurmaClick(Sender: TObject);
 begin
 
+
+  if (inputNome.Text = '') or (inputCodigo.Text = '') or (inputCodigoProf.Text = '') or (inputCodigoDisc.Text = '') then begin
+      ShowMessage('Preencha todos os campos!');
+      exit;
+  end;
+
   if indexTurmaSelecionado <> -1 then begin
     var turma := getTurmaById(listaTurmas[indexTurmaSelecionado].getCodigo);
 
-    dbConnection.qryInsert.SQL.Text:= 'UPDATE public.tb_turmas SET turma_nome='+ QuotedStr(inputNome.text) + ', turma_id_professor= '+ inputCodigoProf.Text + ', turma_id_disciplina= '+ inputCodigoDisc.Text  +' WHERE aluno_id = ' + turma.getCodigo.ToString + ';';
+    dbConnection.qryInsert.SQL.Text:= 'UPDATE public.tb_turmas SET turma_nome='+ QuotedStr(inputNome.text) + ', turma_id_professor= '+ inputCodigoProf.Text + ', turma_id_disciplina= '+ inputCodigoDisc.Text  +' WHERE turma_id = ' + turma.getCodigo.ToString + ';';
 
     listaTurmas[indexTurmaSelecionado].setNome(inputNome.text);
     listaTurmas[indexTurmaSelecionado].setCodigo(StrToInt(inputCodigo.Text));
     btnModalTurma.Caption := 'Adicionar';
   end else begin
-    dbConnection.qryInsert.SQL.Text:= 'INSERT INTO public.tb_turmas (turma_nome) VALUES('+ QuotedStr(inputNome.Text) +  ')';
+    dbConnection.qryInsert.SQL.Text:= 'INSERT INTO public.tb_turmas (turma_nome, turma_id_professor, turma_id_disciplina) VALUES('+ QuotedStr(inputNome.Text) +','+ inputCodigoProf.Text +','+ inputCodigoDisc.Text +')';
     listaTurmas.Add(TTurma.Create(StrToInt(inputCodigo.Text), inputNome.Text, StrToInt(inputCodigoProf.Text), StrToInt(inputCodigoDisc.Text)));
   end;
 
 
-  if (inputNome.Text = '') or (inputCodigo.Text = '') or (inputCodigoProf.Text = '') or (inputCodigoDisc.Text = '') then begin
-      ShowMessage('Preencha todos os campos!');
-  end else begin
-      dbConnection.qryInsert.ExecSQL;
-      dbConnection.qryMaxTurmas.Close;
-      dbConnection.qryMaxTurmas.Open;
-      qntTurmas := dbConnection.qryMaxTurmas.FieldByName('total_turmas').AsInteger + 1;
-      inputCodigo.Text := (qntTurmas).ToString;
-      inputNome.Text := '';
-      inputCodigoProf.Text := '';
-      inputCodigoDisc.Text := '';
-      novasTurmas := novasTurmas + 1;
-  end;
+    dbConnection.qryInsert.ExecSQL;
+    dbConnection.qryMaxTurmas.Close;
+    dbConnection.qryMaxTurmas.Open;
+    qntTurmas := dbConnection.qryMaxTurmas.FieldByName('total_turmas').AsInteger + 1;
+    inputCodigo.Text := (qntTurmas).ToString;
+    inputNome.Text := '';
+    inputCodigoProf.Text := '';
+    inputCodigoDisc.Text := '';
+    novasTurmas := novasTurmas + 1;
+
 end;
 
 
@@ -78,11 +82,20 @@ end;
  procedure TmodalTurma.FormCreate(Sender: TObject);
 begin
   novasTurmas := 0;
-end;
+
+{
+  for professor in listaProfessores do begin
+   slcProfessores.items.Add(professor);
+  end;
+ }
+
+  end;
 
 procedure TmodalTurma.FormShow(Sender: TObject);
 begin
 
+
+  dbConnection.qryMaxTurmas.Close;
   dbConnection.qryMaxTurmas.Open;
   qntTurmas := dbConnection.qryMaxTurmas.FieldByName('total_turmas').AsInteger + 1;
   inputCodigo.Text := (qntTurmas).ToString;
@@ -90,10 +103,7 @@ begin
       var turma := getTurmaById(listaTurmas[indexTurmaSelecionado].getCodigo);
       inputCodigo.Text := turma.getCodigo.ToString ;
       inputNome.Text := turma.getNome;
-
   end;
 
   end;
-
-
 end.

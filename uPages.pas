@@ -4,7 +4,7 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.ExtCtrls, uAluno, uProfessor, uTurma, uAlunoAdd, uTurmaAdd, uData,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.ExtCtrls, uAluno, uProfessor, uTurma, uAlunoAdd, uTurmaAdd, uProfessorAdd, uData,
   Vcl.StdCtrls,FireDAC.Comp.Client, uConnection, System.Generics.Collections, uListas;
 
 type
@@ -38,17 +38,27 @@ type
     lblTitTurmas: TLabel;
     procedure btnModalAlunoClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+
     procedure listarAlunos;
     procedure puxarAlunos;
     procedure editarAluno;
     procedure excluirAluno;
     procedure mostrarNovosAlunos;
 
+    procedure listarProfessores;
+    procedure puxarProfessores;
+    procedure editarProfessor;
+    procedure excluirProfessor;
+    procedure mostrarNovosProfessores;
+
+
     procedure listarTurmas;
     procedure puxarTurmas;
     procedure editarTurma;
     procedure excluirTurma;
     procedure mostrarNovasTurmas;
+
+
 
     procedure ltbxAlunosClick(Sender: TObject);
     procedure btnEditarAlunoClick(Sender: TObject);
@@ -57,6 +67,10 @@ type
     procedure btnEditarTurmaClick(Sender: TObject);
     procedure btnModalTurmaClick(Sender: TObject);
     procedure btnExcluirTurmaClick(Sender: TObject);
+    procedure btnEditarProfessorClick(Sender: TObject);
+    procedure btnModalProfessorClick(Sender: TObject);
+    procedure btnExcluirProfessorClick(Sender: TObject);
+    procedure ltbxProfessoresClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -70,6 +84,7 @@ var
   pages: Tpages;
   alunoAdd: TmodalAluno;
   turmaAdd: TmodalTurma;
+  professorAdd: TmodalProfessor;
 
 
 implementation
@@ -173,6 +188,97 @@ end;
 // ****** FIM DAS FUN합ES ALUNOS ******
 // ****** FIM DAS FUN합ES ALUNOS ******
 
+// ****** INICIO DAS FUN합ES PROFESSORES ******
+// ****** INICIO DAS FUN합ES PROFESSORES ******
+// ****** INICIO DAS FUN합ES PROFESSORES ******
+
+
+procedure Tpages.puxarProfessores;
+begin
+  var getProfessores : TFDQuery;
+  var professor : TProfessor;
+
+  getProfessores := dbConnection.qrySelectAllProfessores;
+  getProfessores.Open;
+
+  while not getProfessores.Eof do begin
+    if getProfessores.FieldByName('ativo').AsBoolean then begin
+      professor := TProfessor.Create(getProfessores.FieldByName('professor_id').AsInteger, getProfessores.FieldByName('professor_nome').AsString, getProfessores.FieldByName('professor_cpf').AsString);
+      listaProfessores.Add(professor);
+      getProfessores.Next;
+    end else begin
+      getProfessores.Next;
+    end;
+  end;
+
+  getProfessores.Close;
+  listarProfessores;
+end;
+
+
+procedure Tpages.listarProfessores;
+var textoAdicionado : String;
+var i : Integer;
+var professor : TProfessor;
+begin
+
+  ltbxProfessores.Clear;
+  i := 0;
+
+  for professor in listaProfessores do begin
+    textoAdicionado := listaProfessores[i].getCodigo.ToString + ' - ' + listaProfessores[i].getNome + ' - ' + listaProfessores[i].getCpf;
+    ltbxProfessores.Items.Add(textoAdicionado);
+    i := i + 1;
+  end;
+
+  lblTitProfessores.Caption := 'Professores Cadastrados : ' + (listaProfessores.Count).ToString;
+
+end;
+
+
+procedure Tpages.editarProfessor;
+var professorSelecionado : TProfessor;
+begin
+
+  professorSelecionado := getProfessorById(listaProfessores[ltbxProfessores.ItemIndex].getCodigo);
+
+  btnEditarProfessor.Enabled := False;
+  btnExcluirProfessor.Enabled := False;
+
+  professorAdd.indexProfessorSelecionado := ltbxProfessores.ItemIndex;
+
+  professorAdd.ShowModal;
+  ltbxProfessores.Items[ltbxProfessores.ItemIndex] := professorSelecionado.getCodigo.ToString + ' - ' + professorSelecionado.getNome + ' - ' + professorSelecionado.getCpf;
+
+end;
+
+
+procedure Tpages.excluirProfessor;
+var professorSelecionado : TProfessor;
+begin
+   professorSelecionado := getProfessorById(listaProfessores[ltbxProfessores.ItemIndex].getCodigo);
+   dbConnection.qryInsert.SQL.Text:= 'UPDATE public.tb_professores SET ativo = false WHERE professor_id = ' + (professorSelecionado.getCodigo).ToString + ';';
+   dbConnection.qryInsert.ExecSQL;
+   btnEditarProfessor.Enabled := False;
+   btnExcluirProfessor.Enabled := False;
+   listaProfessores.remove(professorSelecionado);
+   ltbxProfessores.items.Delete(ltbxProfessores.ItemIndex);
+end;
+
+
+procedure Tpages.mostrarNovosProfessores;
+var i: Integer;
+var adicionarProfessor: Integer;
+begin
+
+  for i := 0 to professorAdd.novosProfessores - 1 do
+  begin
+    adicionarProfessor := listaProfessores.Count - (professorAdd.novosProfessores) + i ;
+    ltbxProfessores.Items.Add(listaProfessores[adicionarProfessor].getCodigo.ToString + ' - ' + listaProfessores[adicionarProfessor].getNome + ' - ' + listaProfessores[adicionarProfessor].getCpf );
+  end;
+
+end;
+
 
 // ****** INICIO DAS FUN합ES TURMAS ******
 // ****** INICIO DAS FUN합ES TURMAS ******
@@ -266,7 +372,9 @@ begin
   end;
 
 end;
-
+// ****** FIM DAS FUN합ES TURMAS ******
+// ****** FIM DAS FUN합ES TURMAS ******
+// ****** FIM DAS FUN합ES TURMAS ******
 
 
 // ****** FIM DAS FUN합ES******
@@ -282,6 +390,7 @@ begin
    end;
 
 end;
+
 
 
 procedure Tpages.btnEditarAlunoClick(Sender: TObject);
@@ -304,6 +413,8 @@ begin
 end;
 
 
+
+
 procedure Tpages.btnModalAlunoClick(Sender: TObject);
 begin
   alunoAdd:= TmodalAluno.Create(Self);
@@ -319,12 +430,55 @@ end;
 
 
 
-////// FIM DO CODIGO ALUNOS//////
-////// FIM DO CODIGO ALUNOS//////
-////// FIM DO CODIGO ALUNOS//////
-////// FIM DO CODIGO ALUNOS//////
 
- procedure Tpages.btnEditarTurmaClick(Sender: TObject);
+////// FIM DO CODIGO ALUNOS//////
+////// FIM DO CODIGO ALUNOS//////
+////// FIM DO CODIGO ALUNOS//////
+////// FIM DO CODIGO ALUNOS//////
+ procedure Tpages.btnEditarProfessorClick(Sender: TObject);
+var professorSelecionado : TAluno;
+begin
+
+  professorAdd:= TmodalProfessor.Create(Self);
+  professorAdd.btnModalProfessor.Caption := 'Atualizar';
+  editarProfessor;
+  professorAdd.free;
+end;
+
+procedure Tpages.btnModalProfessorClick(Sender: TObject);
+begin
+  professorAdd:= TmodalProfessor.Create(Self);
+  professorAdd.indexProfessorSelecionado := -1;
+  professorAdd.qntProfessores := listaProfessores.Count;
+  professorAdd.ShowModal;
+  professorAdd.Free;
+
+  if professorAdd.novosProfessores > 0 then mostrarNovosProfessores; end;
+
+procedure Tpages.btnExcluirProfessorClick(Sender: TObject);
+begin
+   excluirProfessor;
+end;
+
+procedure Tpages.ltbxProfessoresClick(Sender: TObject);
+begin
+
+   if ltbxProfessores.ItemIndex <> -1 then begin
+      btnEditarProfessor.Enabled := True;
+      btnExcluirProfessor.Enabled := True;
+   end;
+
+end;
+
+
+////// FIM DO CODIGO PROFESSORES//////
+////// FIM DO CODIGO PROFESSORES//////
+////// FIM DO CODIGO PROFESSORES//////
+////// FIM DO CODIGO PROFESSORES//////
+
+
+
+procedure Tpages.btnEditarTurmaClick(Sender: TObject);
 begin
   turmaAdd:= TmodalTurma.Create(Self);
   turmaAdd.btnModalTurma.Caption := 'Atualizar';
@@ -368,6 +522,7 @@ procedure Tpages.FormCreate(Sender: TObject);
 begin
   puxarAlunos;
   puxarTurmas;
+  puxarProfessores;
 end;
 
 end.

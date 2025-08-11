@@ -16,13 +16,13 @@ type
     FDConnection1: TFDConnection;
     qrySelectAllAlunos: TFDQuery;
     qryInsert: TFDQuery;
-    qryDadosAluno: TFDQuery;
     qryMaxAlunos: TFDQuery;
     qrySelectAllTurmas: TFDQuery;
     qrySelectAllProfessores: TFDQuery;
     qrySelectAllDisciplinas: TFDQuery;
     qrySelectAllMatriculas: TFDQuery;
     qryMaxTurmas: TFDQuery;
+    qryMaxProfessores: TFDQuery;
     procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }

@@ -11,7 +11,8 @@ uses
   uConnection in 'uConnection.pas' {dbConnection: TDataModule},
   uListas in 'uListas.pas',
   uTurma in 'uTurma.pas',
-  uTurmaAdd in 'uTurmaAdd.pas' {modalTurma};
+  uTurmaAdd in 'uTurmaAdd.pas' {modalTurma},
+  uProfessorAdd in 'uProfessorAdd.pas' {modalProfessor};
 
 {$R *.res}
 

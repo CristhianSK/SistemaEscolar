@@ -23,8 +23,8 @@ object dbConnection: TdbConnection
     Connection = FDConnection1
     SQL.Strings = (
       'SELECT * FROM tb_alunos ORDER BY aluno_id;')
-    Left = 344
-    Top = 368
+    Left = 480
+    Top = 384
   end
   object qryInsert: TFDQuery
     Connection = FDConnection1
@@ -33,17 +33,12 @@ object dbConnection: TdbConnection
     Left = 88
     Top = 232
   end
-  object qryDadosAluno: TFDQuery
-    Connection = FDConnection1
-    Left = 480
-    Top = 368
-  end
   object qryMaxAlunos: TFDQuery
     Connection = FDConnection1
     SQL.Strings = (
       'SELECT MAX(aluno_id) AS total_alunos FROM tb_alunos;')
-    Left = 408
-    Top = 344
+    Left = 576
+    Top = 392
   end
   object qrySelectAllTurmas: TFDQuery
     Connection = FDConnection1
@@ -54,7 +49,11 @@ object dbConnection: TdbConnection
   end
   object qrySelectAllProfessores: TFDQuery
     Connection = FDConnection1
-    Left = 160
+    SQL.Strings = (
+      
+        '              SELECT * FROM tb_professores ORDER BY professor_id' +
+        ';')
+    Left = 368
     Top = 392
   end
   object qrySelectAllDisciplinas: TFDQuery
@@ -64,14 +63,23 @@ object dbConnection: TdbConnection
   end
   object qrySelectAllMatriculas: TFDQuery
     Connection = FDConnection1
-    Left = 280
+    Left = 208
     Top = 72
   end
   object qryMaxTurmas: TFDQuery
     Connection = FDConnection1
     SQL.Strings = (
       'SELECT MAX(turma_id) AS total_turmas FROM tb_turmas;')
-    Left = 456
+    Left = 424
     Top = 160
+  end
+  object qryMaxProfessores: TFDQuery
+    Connection = FDConnection1
+    SQL.Strings = (
+      
+        'SELECT MAX(professor_id) AS total_professores FROM tb_professore' +
+        's;')
+    Left = 232
+    Top = 384
   end
 end

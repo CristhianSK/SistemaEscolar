@@ -17,7 +17,7 @@ object pages: Tpages
     Top = 0
     Width = 633
     Height = 441
-    ActivePage = tabTurmas
+    ActivePage = tabProfessores
     TabOrder = 0
     object Alunos: TTabSheet
       Caption = 'Alunos'
@@ -48,8 +48,6 @@ object pages: Tpages
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 1
-        ExplicitLeft = 64
-        ExplicitTop = 65
         object ltbxAlunos: TListBox
           Left = 225
           Top = 6
@@ -102,8 +100,6 @@ object pages: Tpages
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitLeft = 64
-        ExplicitTop = 65
         object ltbxProfessores: TListBox
           Left = 225
           Top = 6
@@ -112,7 +108,7 @@ object pages: Tpages
           Align = alCustom
           ItemHeight = 15
           TabOrder = 0
-          OnClick = ltbxAlunosClick
+          OnClick = ltbxProfessoresClick
         end
         object btnModalProfessor: TButton
           Left = 300
@@ -121,7 +117,7 @@ object pages: Tpages
           Height = 25
           Caption = 'Adicionar'
           TabOrder = 1
-          OnClick = btnModalAlunoClick
+          OnClick = btnModalProfessorClick
         end
         object btnEditarProfessor: TButton
           Left = 219
@@ -131,7 +127,7 @@ object pages: Tpages
           Caption = 'Editar'
           Enabled = False
           TabOrder = 2
-          OnClick = btnEditarAlunoClick
+          OnClick = btnEditarProfessorClick
         end
         object btnExcluirProfessor: TButton
           Left = 381
@@ -141,7 +137,7 @@ object pages: Tpages
           Caption = 'Excluir'
           Enabled = False
           TabOrder = 3
-          OnClick = btnExcluirAlunoClick
+          OnClick = btnExcluirProfessorClick
         end
       end
       object Panel2: TPanel
@@ -152,7 +148,6 @@ object pages: Tpages
         Align = alTop
         BevelOuter = bvNone
         TabOrder = 1
-        ExplicitTop = 8
         object lblTitProfessores: TLabel
           Left = 262
           Top = 20
@@ -180,8 +175,6 @@ object pages: Tpages
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitLeft = 64
-        ExplicitTop = 65
         object ltbxTurmas: TListBox
           Left = 225
           Top = 6
@@ -230,7 +223,6 @@ object pages: Tpages
         Align = alTop
         BevelOuter = bvNone
         TabOrder = 1
-        ExplicitTop = 8
         object lblTitTurmas: TLabel
           Left = 278
           Top = 20
