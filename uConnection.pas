@@ -24,6 +24,7 @@ type
     qryMaxTurmas: TFDQuery;
     qryMaxProfessores: TFDQuery;
     qryMaxDisciplinas: TFDQuery;
+    qryMaxMatriculas: TFDQuery;
     procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }

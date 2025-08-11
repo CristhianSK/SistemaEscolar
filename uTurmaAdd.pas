@@ -32,7 +32,6 @@ type
   public
     { Public declarations }
     indexTurmaSelecionado : integer;
-    nomeTurmaSelecionado : String;
     qntTurmas: Integer;
     novasTurmas: integer;
     professorSelecionado: TProfessor;

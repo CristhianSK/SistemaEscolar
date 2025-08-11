@@ -14,7 +14,9 @@ uses
   uTurmaAdd in 'uTurmaAdd.pas' {modalTurma},
   uProfessorAdd in 'uProfessorAdd.pas' {modalProfessor},
   uDisciplina in 'uDisciplina.pas',
-  uDisciplinaAdd in 'uDisciplinaAdd.pas' {modalDisciplina};
+  uDisciplinaAdd in 'uDisciplinaAdd.pas' {modalDisciplina},
+  uMatricula in 'uMatricula.pas',
+  uMatriculaAdd in 'uMatriculaAdd.pas' {modalMatricula};
 
 {$R *.res}
 

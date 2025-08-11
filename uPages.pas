@@ -4,7 +4,8 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.ExtCtrls, uAluno, uProfessor, uTurma, uAlunoAdd, uTurmaAdd, uProfessorAdd,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.ExtCtrls, uAluno, uProfessor, uTurma, uAlunoAdd, uTurmaAdd
+  , uProfessorAdd, uMatricula, uMatriculaAdd,
   uDisciplina,uDisciplinaAdd, uData,
   Vcl.StdCtrls,FireDAC.Comp.Client, uConnection, System.Generics.Collections, uListas;
 
@@ -44,6 +45,13 @@ type
     btnModalDisciplina: TButton;
     btnEditarDisciplina: TButton;
     btnExcluirDisciplina: TButton;
+    Panel7: TPanel;
+    ltbxMatriculas: TListBox;
+    btnModalMatricula: TButton;
+    btnEditarMatricula: TButton;
+    btnExcluirMatricula: TButton;
+    Panel8: TPanel;
+    lblMatriculas: TLabel;
     procedure btnModalAlunoClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
 
@@ -74,6 +82,13 @@ type
     procedure mostrarNovasTurmas;
 
 
+    procedure listarMatriculas;
+    procedure puxarMatriculas;
+    procedure editarMatricula;
+    procedure excluirMatricula;
+    procedure mostrarNovosMatriculas;
+
+
 
     procedure ltbxAlunosClick(Sender: TObject);
     procedure btnEditarAlunoClick(Sender: TObject);
@@ -90,6 +105,7 @@ type
     procedure btnExcluirDisciplinaClick(Sender: TObject);
     procedure btnModalDisciplinaClick(Sender: TObject);
     procedure btnEditarDisciplinaClick(Sender: TObject);
+    procedure btnModalMatriculaClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -105,6 +121,7 @@ var
   turmaAdd: TmodalTurma;
   professorAdd: TmodalProfessor;
   disciplinaAdd: TmodalDisciplina;
+  matriculaAdd: TmodalMatricula;
 
 
 implementation
@@ -458,8 +475,6 @@ begin
   turmaAdd.ShowModal;
   ltbxTurmas.Items[ltbxTurmas.ItemIndex] := turmaSelecionado.getCodigo.ToString + ' - ' + turmaSelecionado.getNome + ' - Professor ID: ' + turmaSelecionado.getCodigoProfessor.ToString + ' - Materia ID: ' + turmaSelecionado.getCodigoDisciplina.ToString;
 
-
-
 end;
 
 
@@ -492,6 +507,97 @@ end;
 // ****** FIM DAS FUN합ES TURMAS ******
 // ****** FIM DAS FUN합ES TURMAS ******
 
+// ****** INICIO DAS FUN합ES MATRICULAS ******
+// ****** INICIO DAS FUN합ES MATRICULAS ******
+// ****** INICIO DAS FUN합ES MATRICLAS ******
+procedure Tpages.puxarMatriculas;
+begin
+  var getMatriculas : TFDQuery;
+  var matricula : TMatricula;
+
+  getMatriculas := dbConnection.qrySelectAllMatriculas;
+  getMatriculas.Open;
+
+  while not getMatriculas.Eof do begin
+    if getMatriculas.FieldByName('ativo').AsBoolean then begin
+      matricula := TMatricula.Create(getMatriculas.FieldByName('matricula_id').AsInteger,getMatriculas.FieldByName('matricula_id_aluno').AsInteger,getMatriculas.FieldByName('matricula_id_turma').AsInteger);
+      listaMatriculas.Add(matricula);
+      getMatriculas.Next;
+    end else begin
+      getMatriculas.Next;
+    end;
+
+  end;
+
+  getMatriculas.Close;
+  listarMatriculas;
+end;
+
+
+procedure Tpages.listarMatriculas;
+var textoAdicionado : String;
+var i : Integer;
+var matricula : TMatricula;
+begin
+
+  ltbxMatriculas.Clear;
+  i := 0;
+
+  for matricula in listaMatriculas do begin
+    textoAdicionado := listaMatriculas[i].getCodigo.ToString + ' - Aluno ID: ' + listaMatriculas[i].getCodigoAluno.ToString + ' - Turma ID: ' + listaMatriculas[i].getCodigoTurma.ToString;
+    ltbxMatriculas.Items.Add(textoAdicionado);
+    i := i + 1;
+  end;
+
+  lblMatriculas.Caption := 'Matriculas Cadastradas : ' + (listaMatriculas.Count).ToString;
+
+end;
+
+
+procedure Tpages.excluirMatricula;
+var matriculaSelecionado : TMatricula;
+begin
+   matriculaSelecionado := getMatriculaById(listaMatriculas[ltbxMatriculas.ItemIndex].getCodigo);
+   dbConnection.qryInsert.SQL.Text:= 'UPDATE public.tb_matriculas SET ativo = false WHERE matricula_id = ' + (matriculaSelecionado.getCodigo).ToString + ';';
+   dbConnection.qryInsert.ExecSQL;
+   btnEditarMatricula.Enabled := False;
+   btnExcluirMatricula.Enabled := False;
+   listaMatriculas.remove(matriculaSelecionado);
+   ltbxMatriculas.items.Delete(ltbxMatriculas.ItemIndex);
+end;
+
+
+procedure Tpages.editarMatricula;
+var matriculaSelecionado : TMatricula;
+begin
+
+  matriculaSelecionado := getMatriculaById(listaMatriculas[ltbxMatriculas.ItemIndex].getCodigo);
+
+  btnEditarMatricula.Enabled := False;
+  btnExcluirMatricula.Enabled := False;
+
+  matriculaAdd.indexMatriculaSelecionado := ltbxMatriculas.ItemIndex;
+
+  matriculaAdd.ShowModal;
+  ltbxMatriculas.Items[ltbxMatriculas.ItemIndex] := matriculaSelecionado.getCodigo.ToString + ' - ' + matriculaSelecionado.getCodigoAluno.ToString + ' - ' + matriculaSelecionado.getCodigoTurma.ToString;
+
+end;
+
+
+
+procedure Tpages.mostrarNovosMatriculas;
+var i: Integer;
+var adicionarMatricula: Integer;
+begin
+
+  for i := 0 to matriculaAdd.novosMatriculas - 1 do
+  begin
+    adicionarMatricula := listaMatriculas.Count - (matriculaAdd.novosMatriculas) + i ;
+    ltbxMatriculas.Items.Add(listaMatriculas[adicionarMatricula].getCodigo.ToString + ' - ' + listaMatriculas[adicionarMatricula].getCodigoAluno.toString + ' - ' + listaMatriculas[adicionarMatricula].getCodigoTurma.toString);
+  end;
+
+end;
+
 
 // ****** FIM DAS FUN합ES******
 // ****** FIM DAS FUN합ES ******
@@ -506,6 +612,8 @@ begin
    end;
 
 end;
+
+
 
 
 
@@ -677,6 +785,22 @@ begin
    end;
 
 end;
+////// FIM DO CODIGO TURMAS//////
+////// FIM DO CODIGO TURMAS//////
+////// FIM DO CODIGO TURMAS//////
+////// FIM DO CODIGO TURMAS//////
+
+procedure Tpages.btnModalMatriculaClick(Sender: TObject);
+begin
+  matriculaAdd:= TmodalMatricula.Create(Self);
+  matriculaAdd.indexMatriculaSelecionado := -1;
+  matriculaAdd.qntMatriculas := listaMatriculas.Count;
+  matriculaAdd.ShowModal;
+  matriculaAdd.Free;
+
+  if turmaAdd.novasTurmas > 0 then mostrarNovasTurmas;
+
+end;
 
 
 procedure Tpages.FormCreate(Sender: TObject);
@@ -685,6 +809,7 @@ begin
   puxarTurmas;
   puxarProfessores;
   puxarDisciplinas;
+  puxarMatriculas;
 end;
 
 end.

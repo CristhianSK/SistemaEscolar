@@ -17,7 +17,7 @@ object pages: Tpages
     Top = 0
     Width = 633
     Height = 441
-    ActivePage = tabDisciplinas
+    ActivePage = tabMatriculas
     TabOrder = 0
     object Alunos: TTabSheet
       Caption = 'Alunos'
@@ -306,6 +306,71 @@ object pages: Tpages
     object tabMatriculas: TTabSheet
       Caption = 'Matr'#237'culas'
       ImageIndex = 4
+      object Panel7: TPanel
+        Left = 0
+        Top = 41
+        Width = 625
+        Height = 370
+        Align = alClient
+        BevelOuter = bvNone
+        TabOrder = 0
+        object ltbxMatriculas: TListBox
+          Left = 219
+          Top = 6
+          Width = 222
+          Height = 321
+          Align = alCustom
+          ItemHeight = 15
+          TabOrder = 0
+        end
+        object btnModalMatricula: TButton
+          Left = 300
+          Top = 333
+          Width = 75
+          Height = 25
+          Caption = 'Adicionar'
+          TabOrder = 1
+          OnClick = btnModalMatriculaClick
+        end
+        object btnEditarMatricula: TButton
+          Left = 219
+          Top = 333
+          Width = 75
+          Height = 25
+          Caption = 'Editar'
+          Enabled = False
+          TabOrder = 2
+        end
+        object btnExcluirMatricula: TButton
+          Left = 381
+          Top = 333
+          Width = 75
+          Height = 25
+          Caption = 'Excluir'
+          Enabled = False
+          TabOrder = 3
+        end
+      end
+      object Panel8: TPanel
+        Left = 0
+        Top = 0
+        Width = 625
+        Height = 41
+        Align = alTop
+        BevelOuter = bvNone
+        TabOrder = 1
+        ExplicitTop = 8
+        object lblMatriculas: TLabel
+          Left = 262
+          Top = 20
+          Width = 122
+          Height = 15
+          Margins.Left = 270
+          Margins.Top = 12
+          Align = alCustom
+          Caption = 'Matr'#237'culas Cadastradas'
+        end
+      end
     end
   end
 end

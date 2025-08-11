@@ -160,6 +160,11 @@
             <Form>modalDisciplina</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="uMatricula.pas"/>
+        <DCCReference Include="uMatriculaAdd.pas">
+            <Form>modalMatricula</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
