@@ -17,7 +17,7 @@ object pages: Tpages
     Top = 0
     Width = 633
     Height = 441
-    ActivePage = tabProfessores
+    ActivePage = tabDisciplinas
     TabOrder = 0
     object Alunos: TTabSheet
       Caption = 'Alunos'
@@ -163,6 +163,74 @@ object pages: Tpages
     object tabDisciplinas: TTabSheet
       Caption = 'Disciplinas'
       ImageIndex = 2
+      object Panel5: TPanel
+        Left = 0
+        Top = 0
+        Width = 625
+        Height = 41
+        Align = alTop
+        BevelOuter = bvNone
+        TabOrder = 0
+        ExplicitTop = 8
+        object lblTitDisciplina: TLabel
+          Left = 278
+          Top = 20
+          Width = 123
+          Height = 15
+          Margins.Left = 270
+          Margins.Top = 12
+          Align = alCustom
+          Caption = 'Disciplinas Cadastradas'
+        end
+      end
+      object Panel6: TPanel
+        Left = 0
+        Top = 41
+        Width = 625
+        Height = 370
+        Align = alClient
+        BevelOuter = bvNone
+        TabOrder = 1
+        object ltbxDisciplinas: TListBox
+          Left = 225
+          Top = 6
+          Width = 222
+          Height = 321
+          Align = alCustom
+          ItemHeight = 15
+          TabOrder = 0
+          OnClick = ltbxDisciplinasClick
+        end
+        object btnModalDisciplina: TButton
+          Left = 300
+          Top = 333
+          Width = 75
+          Height = 25
+          Caption = 'Adicionar'
+          TabOrder = 1
+          OnClick = btnModalDisciplinaClick
+        end
+        object btnEditarDisciplina: TButton
+          Left = 219
+          Top = 333
+          Width = 75
+          Height = 25
+          Caption = 'Editar'
+          Enabled = False
+          TabOrder = 2
+          OnClick = btnEditarDisciplinaClick
+        end
+        object btnExcluirDisciplina: TButton
+          Left = 381
+          Top = 333
+          Width = 75
+          Height = 25
+          Caption = 'Excluir'
+          Enabled = False
+          TabOrder = 3
+          OnClick = btnExcluirDisciplinaClick
+        end
+      end
     end
     object tabTurmas: TTabSheet
       Caption = 'Turmas'

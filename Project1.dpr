@@ -12,7 +12,9 @@ uses
   uListas in 'uListas.pas',
   uTurma in 'uTurma.pas',
   uTurmaAdd in 'uTurmaAdd.pas' {modalTurma},
-  uProfessorAdd in 'uProfessorAdd.pas' {modalProfessor};
+  uProfessorAdd in 'uProfessorAdd.pas' {modalProfessor},
+  uDisciplina in 'uDisciplina.pas',
+  uDisciplinaAdd in 'uDisciplinaAdd.pas' {modalDisciplina};
 
 {$R *.res}
 

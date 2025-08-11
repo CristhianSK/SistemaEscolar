@@ -4,7 +4,8 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.ExtCtrls, uAluno, uProfessor, uTurma, uAlunoAdd, uTurmaAdd, uProfessorAdd, uData,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.ExtCtrls, uAluno, uProfessor, uTurma, uAlunoAdd, uTurmaAdd, uProfessorAdd,
+  uDisciplina,uDisciplinaAdd, uData,
   Vcl.StdCtrls,FireDAC.Comp.Client, uConnection, System.Generics.Collections, uListas;
 
 type
@@ -36,6 +37,13 @@ type
     btnExcluirTurma: TButton;
     Panel4: TPanel;
     lblTitTurmas: TLabel;
+    Panel5: TPanel;
+    lblTitDisciplina: TLabel;
+    Panel6: TPanel;
+    ltbxDisciplinas: TListBox;
+    btnModalDisciplina: TButton;
+    btnEditarDisciplina: TButton;
+    btnExcluirDisciplina: TButton;
     procedure btnModalAlunoClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
 
@@ -44,6 +52,13 @@ type
     procedure editarAluno;
     procedure excluirAluno;
     procedure mostrarNovosAlunos;
+
+    procedure listarDisciplinas;
+    procedure puxarDisciplinas;
+    procedure editarDisciplina;
+    procedure excluirDisciplina;
+    procedure mostrarNovosDisciplinas;
+
 
     procedure listarProfessores;
     procedure puxarProfessores;
@@ -71,6 +86,10 @@ type
     procedure btnModalProfessorClick(Sender: TObject);
     procedure btnExcluirProfessorClick(Sender: TObject);
     procedure ltbxProfessoresClick(Sender: TObject);
+    procedure ltbxDisciplinasClick(Sender: TObject);
+    procedure btnExcluirDisciplinaClick(Sender: TObject);
+    procedure btnModalDisciplinaClick(Sender: TObject);
+    procedure btnEditarDisciplinaClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -85,6 +104,7 @@ var
   alunoAdd: TmodalAluno;
   turmaAdd: TmodalTurma;
   professorAdd: TmodalProfessor;
+  disciplinaAdd: TmodalDisciplina;
 
 
 implementation
@@ -280,6 +300,102 @@ begin
 end;
 
 
+// ****** FIM DAS FUN합ES PROFESSORES ******
+// ****** FIM DAS FUN합ES PROFESSORES ******
+// ****** FIM DAS FUN합ES PROFESSORES ******
+
+// ****** INICIO DAS FUN합ES DISCIPLINAS ******
+// ****** INICIO DAS FUN합ES DISCIPLINAS ******
+// ****** INICIO DAS FUN합ES DISCIPLINAS ******
+
+
+procedure Tpages.puxarDisciplinas;
+begin
+  var getDisciplinas : TFDQuery;
+  var disciplina : TDisciplina;
+
+  getDisciplinas := dbConnection.qrySelectAllDisciplinas;
+  getDisciplinas.Open;
+
+  while not getDisciplinas.Eof do begin
+    if getDisciplinas.FieldByName('ativo').AsBoolean then begin
+      disciplina := TDisciplina.Create(getDisciplinas.FieldByName('disciplina_id').AsInteger, getDisciplinas.FieldByName('disciplina_nome').AsString);
+      listaDisciplinas.Add(disciplina);
+      getDisciplinas.Next;
+    end else begin
+      getDisciplinas.Next;
+    end;
+
+  end;
+
+  getDisciplinas.Close;
+  listarDisciplinas;
+end;
+
+
+procedure Tpages.listarDisciplinas;
+var textoAdicionado : String;
+var i : Integer;
+var disciplina : TDisciplina;
+begin
+
+  ltbxDisciplinas.Clear;
+  i := 0;
+
+  for disciplina in listaDisciplinas do begin
+    textoAdicionado := listaDisciplinas[i].getCodigo.ToString + ' - ' + listaDisciplinas[i].getNome;
+    ltbxDisciplinas.Items.Add(textoAdicionado);
+    i := i + 1;
+  end;
+
+  lblTitDisciplina.Caption := 'Disciplinas Cadastradas : ' + (listaDisciplinas.Count).ToString;
+
+end;
+
+procedure Tpages.editarDisciplina;
+var disciplinaSelecionado : TDisciplina;
+begin
+
+  disciplinaSelecionado := getDisciplinaById(listaDisciplinas[ltbxDisciplinas.ItemIndex].getCodigo);
+
+  btnEditarDisciplina.Enabled := False;
+  btnExcluirDisciplina.Enabled := False;
+
+  disciplinaAdd.indexDisciplinaSelecionado := ltbxDisciplinas.ItemIndex;
+
+  disciplinaAdd.ShowModal;
+  ltbxDisciplinas.Items[ltbxDisciplinas.ItemIndex] := disciplinaSelecionado.getCodigo.ToString + ' - ' + disciplinaSelecionado.getNome;
+
+end;
+
+
+procedure Tpages.excluirDisciplina;
+var disciplinaSelecionado : TDisciplina;
+begin
+   disciplinaSelecionado := getDisciplinaById(listaDisciplinas[ltbxDisciplinas.ItemIndex].getCodigo);
+   dbConnection.qryInsert.SQL.Text:= 'UPDATE public.tb_disciplinas SET ativo = false WHERE disciplina_id = ' + (disciplinaSelecionado.getCodigo).ToString + ';';
+   dbConnection.qryInsert.ExecSQL;
+   btnEditarDisciplina.Enabled := False;
+   btnExcluirDisciplina.Enabled := False;
+   listaDisciplinas.remove(disciplinaSelecionado);
+   ltbxDisciplinas.items.Delete(ltbxDisciplinas.ItemIndex);
+end;
+
+
+procedure Tpages.mostrarNovosDisciplinas;
+var i: Integer;
+var adicionarDisciplina: Integer;
+begin
+
+  for i := 0 to disciplinaAdd.novosDisciplinas - 1 do
+  begin
+    adicionarDisciplina := listaDisciplinas.Count - (disciplinaAdd.novosDisciplinas) + i ;
+    ltbxDisciplinas.Items.Add(listaDisciplinas[adicionarDisciplina].getCodigo.ToString + ' - ' + listaDisciplinas[adicionarDisciplina].getNome );
+  end;
+
+end;
+
+
 // ****** INICIO DAS FUN합ES TURMAS ******
 // ****** INICIO DAS FUN합ES TURMAS ******
 // ****** INICIO DAS FUN합ES TURMAS ******
@@ -393,6 +509,7 @@ end;
 
 
 
+
 procedure Tpages.btnEditarAlunoClick(Sender: TObject);
 var alunoSelecionado : TAluno;
 begin
@@ -415,6 +532,7 @@ end;
 
 
 
+
 procedure Tpages.btnModalAlunoClick(Sender: TObject);
 begin
   alunoAdd:= TmodalAluno.Create(Self);
@@ -431,12 +549,15 @@ end;
 
 
 
+
 ////// FIM DO CODIGO ALUNOS//////
 ////// FIM DO CODIGO ALUNOS//////
 ////// FIM DO CODIGO ALUNOS//////
 ////// FIM DO CODIGO ALUNOS//////
- procedure Tpages.btnEditarProfessorClick(Sender: TObject);
-var professorSelecionado : TAluno;
+
+
+procedure Tpages.btnEditarProfessorClick(Sender: TObject);
+var professorSelecionado : TProfessor;
 begin
 
   professorAdd:= TmodalProfessor.Create(Self);
@@ -453,7 +574,8 @@ begin
   professorAdd.ShowModal;
   professorAdd.Free;
 
-  if professorAdd.novosProfessores > 0 then mostrarNovosProfessores; end;
+  if professorAdd.novosProfessores > 0 then mostrarNovosProfessores;
+end;
 
 procedure Tpages.btnExcluirProfessorClick(Sender: TObject);
 begin
@@ -476,6 +598,45 @@ end;
 ////// FIM DO CODIGO PROFESSORES//////
 ////// FIM DO CODIGO PROFESSORES//////
 
+procedure Tpages.btnEditarDisciplinaClick(Sender: TObject);
+var disciplinaSelecionado : TDisciplina;
+begin
+
+  disciplinaAdd:= TmodalDisciplina.Create(Self);
+  disciplinaAdd.btnModalDisciplina.Caption := 'Atualizar';
+  editarDisciplina;
+  disciplinaAdd.free;
+end;
+
+procedure Tpages.ltbxDisciplinasClick(Sender: TObject);
+begin
+   if ltbxDisciplinas.ItemIndex <> -1 then begin
+      btnEditarDisciplina.Enabled := True;
+      btnExcluirDisciplina.Enabled := True;
+   end;
+end;
+
+
+procedure Tpages.btnExcluirDisciplinaClick(Sender: TObject);
+begin
+    excluirDisciplina;
+end;
+
+procedure Tpages.btnModalDisciplinaClick(Sender: TObject);
+begin
+  disciplinaAdd:= TmodalDisciplina.Create(Self);
+  disciplinaAdd.indexDisciplinaSelecionado := -1;
+  disciplinaAdd.qntDisciplinas := listaDisciplinas.Count;
+  disciplinaAdd.ShowModal;
+  disciplinaAdd.Free;
+
+  if disciplinaAdd.novosDisciplinas > 0 then mostrarNovosDisciplinas;
+end;
+
+////// FIM DO CODIGO DISCIPLINAS//////
+////// FIM DO CODIGO DISCIPLINAS//////
+////// FIM DO CODIGO DISCIPLINAS//////
+////// FIM DO CODIGO DISCIPLINAS//////
 
 
 procedure Tpages.btnEditarTurmaClick(Sender: TObject);
@@ -523,6 +684,7 @@ begin
   puxarAlunos;
   puxarTurmas;
   puxarProfessores;
+  puxarDisciplinas;
 end;
 
 end.

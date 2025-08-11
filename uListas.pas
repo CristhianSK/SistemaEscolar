@@ -8,7 +8,7 @@ uses
 
   var listaAlunos : TObjectList<TAluno>;
   var listaProfessores : TObjectList<TProfessor>;
-  var listaDisciplinas : TObjectList<TDisciplinas>;
+  var listaDisciplinas : TObjectList<TDisciplina>;
   var listaTurmas : TObjectList<TTurma>;
 
   function getAlunoById(id: Integer): TAluno;

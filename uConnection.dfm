@@ -58,8 +58,12 @@ object dbConnection: TdbConnection
   end
   object qrySelectAllDisciplinas: TFDQuery
     Connection = FDConnection1
-    Left = 16
-    Top = 368
+    SQL.Strings = (
+      
+        '              SELECT * FROM tb_disciplinas ORDER BY disciplina_i' +
+        'd;')
+    Left = 248
+    Top = 280
   end
   object qrySelectAllMatriculas: TFDQuery
     Connection = FDConnection1
@@ -81,5 +85,14 @@ object dbConnection: TdbConnection
         's;')
     Left = 232
     Top = 384
+  end
+  object qryMaxDisciplinas: TFDQuery
+    Connection = FDConnection1
+    SQL.Strings = (
+      
+        'SELECT MAX(disciplina_id) AS total_disciplinas FROM tb_disciplin' +
+        'as;')
+    Left = 320
+    Top = 192
   end
 end

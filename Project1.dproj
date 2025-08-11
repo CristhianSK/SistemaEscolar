@@ -155,6 +155,11 @@
             <Form>modalProfessor</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="uDisciplina.pas"/>
+        <DCCReference Include="uDisciplinaAdd.pas">
+            <Form>modalDisciplina</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

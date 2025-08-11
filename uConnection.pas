@@ -23,6 +23,7 @@ type
     qrySelectAllMatriculas: TFDQuery;
     qryMaxTurmas: TFDQuery;
     qryMaxProfessores: TFDQuery;
+    qryMaxDisciplinas: TFDQuery;
     procedure DataModuleCreate(Sender: TObject);
   private
     { Private declarations }
