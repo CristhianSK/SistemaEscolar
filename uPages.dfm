@@ -294,7 +294,7 @@ object pages: Tpages
         object lblTitTurmas: TLabel
           Left = 278
           Top = 20
-          Width = 107
+          Width = 106
           Height = 15
           Margins.Left = 270
           Margins.Top = 12
@@ -359,7 +359,6 @@ object pages: Tpages
         Align = alTop
         BevelOuter = bvNone
         TabOrder = 1
-        ExplicitTop = 8
         object lblMatriculas: TLabel
           Left = 262
           Top = 20

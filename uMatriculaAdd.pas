@@ -20,6 +20,9 @@ type
     slcTurmas: TComboBox;
     procedure btnModalMatriculaClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure slcAlunosChange(Sender: TObject);
+    procedure slcTurmasChange(Sender: TObject);
   private
     { Private declarations }
   public
@@ -49,7 +52,7 @@ begin
   if indexMatriculaSelecionado <> -1 then begin
     var matricula := getMatriculaById(listaMatriculas[indexMatriculaSelecionado].getCodigo);
 
-    dbConnection.qryInsert.SQL.Text:= 'UPDATE public.tb_atriculas SET matricula_id_aluno= '+ (alunoSelecionado.getCodigo).ToString + ', matricula_id_turma= '+ (turmaSelecionada.getCodigo).ToString  +' WHERE matricula_id = ' + matricula.getCodigo.ToString + ';';
+    dbConnection.qryInsert.SQL.Text:= 'UPDATE public.tb_matriculas SET matricula_id_aluno= '+ (alunoSelecionado.getCodigo).ToString + ', matricula_id_turma= '+ (turmaSelecionada.getCodigo).ToString  +' WHERE matricula_id = ' + matricula.getCodigo.ToString + ';';
 
     listaMatriculas[indexMatriculaSelecionado].setCodigo(StrToInt(inputCodigo.Text));
     listaMatriculas[indexMatriculaSelecionado].setCodigoAluno(alunoSelecionado.getCodigo);
@@ -57,8 +60,8 @@ begin
 
     btnModalMatricula.Caption := 'Adicionar';
   end else begin
-    dbConnection.qryInsert.SQL.Text:= 'INSERT INTO public.tb_matriculas (turma_id_aluno, turma_id_turma) VALUES('+(alunoSelecionado.getCodigo).ToString +','+ (turmaSelecionada.getCodigo).ToString +')';
-    listaMAtriculas.Add(TMatricula.Create(StrToInt(inputCodigo.Text),alunoSelecionado.getCodigo,turmaSelecionada.getCodigo));
+    dbConnection.qryInsert.SQL.Text:= 'INSERT INTO public.tb_matriculas(turma_id_aluno, turma_id_turma) VALUES('+(alunoSelecionado.getCodigo).ToString +','+ (turmaSelecionada.getCodigo).ToString +')';
+    listaMatriculas.Add(TMatricula.Create(StrToInt(inputCodigo.Text),alunoSelecionado.getCodigo,turmaSelecionada.getCodigo));
   end;
 
 
@@ -77,5 +80,59 @@ procedure TmodalMatricula.FormCreate(Sender: TObject);
 begin
   novosMatriculas := 0;
 end;
+procedure TmodalMatricula.FormShow(Sender: TObject);
+
+var aluno : TAluno;
+var  turma : TTurma;
+begin
+slcAlunos.Clear;
+slcTurmas.Clear;
+
+  for aluno in listaAlunos do begin
+    slcAlunos.items.Add(aluno.getNome);
+  end;
+
+  for turma in listaTurmas do begin
+    slcTurmas.items.Add(turma.getNome);
+
+  end;
+
+
+  dbConnection.qryMaxMatriculas.Close;
+  dbConnection.qryMaxMatriculas.Open;
+  qntMatriculas := dbConnection.qryMaxMatriculas.FieldByName('total_matriculas').AsInteger + 1;
+  inputCodigo.Text := (qntMatriculas).ToString;
+  if indexMatriculaSelecionado <> -1 then begin
+      var matricula := getMatriculaById(listaMatriculas[indexMatriculaSelecionado].getCodigo);
+      inputCodigo.Text := matricula.getCodigo.ToString ;
+      slcAlunos.ItemIndex := indexMatriculaSelecionado;
+      slcTurmas.ItemIndex := indexMatriculaSelecionado;
+  end;
+
+end;
+
+
+procedure TmodalMatricula.slcAlunosChange(Sender: TObject);
+var
+  indice: Integer;
+begin
+  indice := slcAlunos.ItemIndex;
+
+  if indice > -1 then begin
+    alunoSelecionado := listaAlunos[indice];
+  end;
+end;
+
+procedure TmodalMatricula.slcTurmasChange(Sender: TObject);
+var
+  indice: Integer;
+begin
+  indice := slcTurmas.ItemIndex;
+
+  if indice > -1 then begin
+    turmaSelecionada := listaTurmas[indice];
+  end;
+end;
+
 
 end.

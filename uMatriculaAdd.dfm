@@ -11,6 +11,7 @@ object modalMatricula: TmodalMatricula
   Font.Name = 'Segoe UI'
   Font.Style = []
   OnCreate = FormCreate
+  OnShow = FormShow
   TextHeight = 15
   object pnlAdicionarTurma: TPanel
     AlignWithMargins = True
@@ -46,7 +47,7 @@ object modalMatricula: TmodalMatricula
     object lblInputTurma: TLabel
       Left = 32
       Top = 140
-      Width = 35
+      Width = 34
       Height = 15
       Caption = 'Turma'
     end
@@ -75,6 +76,7 @@ object modalMatricula: TmodalMatricula
       Height = 23
       Style = csDropDownList
       TabOrder = 2
+      OnChange = slcAlunosChange
     end
     object slcTurmas: TComboBox
       Left = 32
@@ -83,6 +85,7 @@ object modalMatricula: TmodalMatricula
       Height = 23
       Style = csDropDownList
       TabOrder = 3
+      OnChange = slcTurmasChange
     end
   end
 end

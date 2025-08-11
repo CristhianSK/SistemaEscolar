@@ -112,9 +112,14 @@ slcDisciplinas.Clear;
       var turma := getTurmaById(listaTurmas[indexTurmaSelecionado].getCodigo);
       inputCodigo.Text := turma.getCodigo.ToString ;
       inputNome.Text := turma.getNome;
+      slcProfessores.ItemIndex := indexTurmaSelecionado;
+      slcDisciplinas.ItemIndex := indexTurmaSelecionado;
+
   end;
 
   end;
+
+
 procedure TmodalTurma.slcDisciplinasChange(Sender: TObject);
 var
   indice: Integer;
@@ -136,7 +141,6 @@ begin
 
   if indice > -1 then begin
     professorSelecionado := listaProfessores[indice];
-
   end;
 end;
 
