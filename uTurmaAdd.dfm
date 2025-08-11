@@ -45,7 +45,7 @@ object modalTurma: TmodalTurma
       Caption = 'Nome'
     end
     object lblInputProf: TLabel
-      Left = 17
+      Left = 33
       Top = 138
       Width = 49
       Height = 15
@@ -53,7 +53,7 @@ object modalTurma: TmodalTurma
     end
     object lblInputDisc: TLabel
       Left = 32
-      Top = 200
+      Top = 188
       Width = 51
       Height = 15
       Caption = 'Disciplina'
@@ -84,29 +84,23 @@ object modalTurma: TmodalTurma
       TabOrder = 2
       TextHint = 'joao'
     end
-    object inputCodigoProf: TEdit
-      Left = 72
-      Top = 138
-      Width = 121
-      Height = 23
-      TabOrder = 3
-      TextHint = 'carlos'
-    end
-    object inputCodigoDisc: TEdit
-      Left = 32
-      Top = 221
-      Width = 121
-      Height = 23
-      TabOrder = 4
-      TextHint = 'matem'#225'tica'
-    end
     object slcProfessores: TComboBox
       Left = 32
-      Top = 171
+      Top = 159
       Width = 121
       Height = 23
-      TabOrder = 5
-      Text = 'slcProfessores'
+      Style = csDropDownList
+      TabOrder = 3
+      OnChange = slcProfessoresChange
+    end
+    object slcDisciplinas: TComboBox
+      Left = 32
+      Top = 209
+      Width = 121
+      Height = 23
+      Style = csDropDownList
+      TabOrder = 4
+      OnChange = slcDisciplinasChange
     end
   end
 end
