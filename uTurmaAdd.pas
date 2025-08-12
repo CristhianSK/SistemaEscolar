@@ -61,7 +61,7 @@ begin
     listaTurmas[indexTurmaSelecionado].setNome(inputNome.text);
     listaTurmas[indexTurmaSelecionado].setCodigo(StrToInt(inputCodigo.Text));
     listaTurmas[indexTurmaSelecionado].setCodigoProfessor(professorSelecionado.getCodigo);
-    listaTurmas[indexTurmaSelecionado].setCodigo(disciplinaSelecionada.getCodigo);
+    listaTurmas[indexTurmaSelecionado].setCodigoDisciplina(disciplinaSelecionada.getCodigo);
 
     btnModalTurma.Caption := 'Adicionar';
   end else begin

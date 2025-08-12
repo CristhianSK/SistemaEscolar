@@ -194,7 +194,7 @@ begin
 
   alunoAdd.ShowModal;
   ltbxAlunos.Items[ltbxAlunos.ItemIndex] := alunoSelecionado.getCodigo.ToString + ' - ' + alunoSelecionado.getNome;
-
+  listarMatriculas;
 end;
 
 
@@ -289,7 +289,7 @@ begin
 
   professorAdd.ShowModal;
   ltbxProfessores.Items[ltbxProfessores.ItemIndex] := professorSelecionado.getCodigo.ToString + ' - ' + professorSelecionado.getNome + ' - ' + professorSelecionado.getCpf;
-
+  listarTurmas;
 end;
 
 
@@ -453,11 +453,15 @@ begin
   ltbxTurmas.Clear;
   i := 0;
 
-  for turma in listaTurmas do begin
-    textoAdicionado := listaTurmas[i].getCodigo.ToString + ' - ' + listaTurmas[i].getNome + ' - Professor ID: ' + listaTurmas[i].getCodigoProfessor.ToString + ' - Materia ID: ' + listaTurmas[i].getCodigoDisciplina.ToString;
+
+    for turma in listaTurmas do begin
+    var professor := getProfessorById(listaTurmas[i].getCodigoProfessor);
+    var disciplina := getDisciplinaById(listaTurmas[i].getCodigoDisciplina);
+    textoAdicionado := listaTurmas[i].getCodigo.ToString + ' - ' + listaTurmas[i].getNome + ' - Professor: ' + professor.getNome + ' - Materia: ' + disciplina.getNome;
     ltbxTurmas.Items.Add(textoAdicionado);
     i := i + 1;
   end;
+
 
   lblTitTurmas.Caption := 'Turmas Cadastradas : ' + (listaTurmas.Count).ToString;
 
@@ -466,19 +470,23 @@ end;
 
 procedure Tpages.editarTurma;
 var turmaSelecionado : TTurma;
+professor :TProfessor;
+disciplina : TDisciplina;
 begin
-
+  turmaAdd.indexTurmaSelecionado := ltbxTurmas.ItemIndex;
   turmaSelecionado := getTurmaById(listaTurmas[ltbxTurmas.ItemIndex].getCodigo);
 
   btnEditarTurma.Enabled := False;
   btnExcluirTurma.Enabled := False;
 
-  turmaAdd.indexTurmaSelecionado := ltbxTurmas.ItemIndex;
+
 
   turmaAdd.ShowModal;
 
-  ltbxTurmas.Items[ltbxTurmas.ItemIndex] := turmaSelecionado.getCodigo.ToString + ' - ' + turmaSelecionado.getNome + ' - Professor ID: ' + turmaSelecionado.getCodigoProfessor.ToString + ' - Materia ID: ' + turmaSelecionado.getCodigoDisciplina.ToString;
-
+  professor := getProfessorById(turmaSelecionado.getCodigoProfessor);
+  disciplina := getDisciplinaById(turmaSelecionado.getCodigoDisciplina);
+  ltbxTurmas.Items[ltbxTurmas.ItemIndex] := turmaSelecionado.getCodigo.ToString + ' - ' + turmaSelecionado.getNome + ' - Professor: ' + professor.getNome + ' - Materia: ' + disciplina.getNome;
+  listarMatriculas;
 end;
 
 
@@ -503,7 +511,10 @@ begin
   for i := 0 to turmaAdd.novasTurmas - 1 do
   begin
     adicionarTurma := listaTurmas.Count - (turmaAdd.novasTurmas) + i ;
-    ltbxTurmas.Items.Add(listaTurmas[adicionarTurma].getCodigo.ToString + ' - ' + listaTurmas[adicionarTurma].getNome + ' - Professor ID: ' + listaTurmas[adicionarTurma].getCodigoProfessor.ToString + ' - Materia ID: ' + listaTurmas[adicionarTurma].getCodigoDisciplina.ToString);
+    var professor := getProfessorById(listaTurmas[adicionarTurma].getCodigoProfessor);
+    var disciplina := getDisciplinaById(listaTurmas[adicionarTurma].getCodigoDisciplina);
+
+    ltbxTurmas.Items.Add(listaTurmas[adicionarTurma].getCodigo.ToString + ' - ' + listaTurmas[adicionarTurma].getNome + ' - Professor: ' + professor.getNome + ' - Materia: ' + disciplina.getNome);
   end;
 
 end;
@@ -589,7 +600,7 @@ begin
   var aluno := getAlunoById(matriculaSelecionado.getCodigoAluno);
   var turma := getTurmaById(matriculaSelecionado.getCodigoTurma);
   ltbxMatriculas.Items[ltbxMatriculas.ItemIndex] :=matriculaSelecionado.getCodigo.ToString + ' - Aluno: ' + aluno.getNome + ' - Turma : ' + turma.getNome;
-
+  listarTurmas;
 
 end;
 
@@ -848,9 +859,9 @@ end;
 procedure Tpages.FormCreate(Sender: TObject);
 begin
   puxarAlunos;
-  puxarTurmas;
   puxarProfessores;
   puxarDisciplinas;
+  puxarTurmas;
   puxarMatriculas;
 end;
 
