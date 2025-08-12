@@ -17,7 +17,7 @@ object pages: Tpages
     Top = 0
     Width = 633
     Height = 441
-    ActivePage = tabTurmas
+    ActivePage = tabProfessores
     TabOrder = 0
     object Alunos: TTabSheet
       Caption = 'Alunos'
@@ -314,7 +314,7 @@ object pages: Tpages
         BevelOuter = bvNone
         TabOrder = 0
         object ltbxMatriculas: TListBox
-          Left = 219
+          Left = 225
           Top = 6
           Width = 222
           Height = 321

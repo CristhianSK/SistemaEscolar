@@ -209,17 +209,59 @@ begin
 end;
 
 
+
 procedure Tpages.excluirAluno;
-var alunoSelecionado : TAluno;
+var
+  alunoSelecionado: TAluno;
+  matricula: TMatricula;
+  matriculasExclusao: TStringList;
+  i: Integer;
 begin
-   alunoSelecionado := getAlunoById(listaAlunos[ltbxAlunos.ItemIndex].getCodigo);
-   dbConnection.qryInsert.SQL.Text:= 'UPDATE public.tb_alunos SET ativo = false WHERE aluno_id = ' + (alunoSelecionado.getCodigo).ToString + ';';
-   dbConnection.qryInsert.ExecSQL;
-   btnEditarAluno.Enabled := False;
-   btnExcluirAluno.Enabled := False;
-   listaAlunos.remove(alunoSelecionado);
-   ltbxAlunos.items.Delete(ltbxAlunos.ItemIndex);
-   lblTitAlunos.Caption := 'Alunos Cadastrados : ' + (listaAlunos.Count).ToString;
+  alunoSelecionado := getAlunoById(listaAlunos[ltbxAlunos.ItemIndex].getCodigo);
+  matriculasExclusao := TStringList.Create;
+
+  for matricula in listaMatriculas do begin
+
+    if matricula.getCodigoAluno = alunoSelecionado.getCodigo then begin
+      matriculasExclusao.Add(matricula.getCodigo.ToString);
+    end;
+  end;
+
+  if matriculasExclusao.Count > 0 then begin
+    if not confirmarExclusao('O aluno ' + alunoSelecionado.getNome + ' será apagado. As matrículas: '+ sLineBreak + matriculasExclusao.Text +' também serão apagadas. Deseja continuar?') then begin
+      matriculasExclusao.Free;
+      Exit;
+    end;
+
+    dbConnection.qryInsert.SQL.Text := 'UPDATE public.tb_matriculas SET ativo = false ' + 'WHERE matricula_id_aluno = ' + (alunoSelecionado.getCodigo).ToString + ';';
+    dbConnection.qryInsert.ExecSQL;
+
+    for i := listaMatriculas.Count - 1 downto 0 do begin
+      if listaMatriculas[i].getCodigoAluno = alunoSelecionado.getCodigo then begin
+        listaMatriculas.Remove(listaMatriculas[i]);
+      end;
+    end;
+
+    listarMatriculas;
+  end else begin
+    if not confirmarExclusao('Deseja continuar com a exclusão do aluno ' + alunoSelecionado.getNome + '?') then begin
+      matriculasExclusao.Free;
+      Exit;
+    end;
+  end;
+
+  dbConnection.qryInsert.SQL.Text := 'UPDATE public.tb_alunos SET ativo = false WHERE aluno_id = ' + (alunoSelecionado.getCodigo).ToString + ';';
+  dbConnection.qryInsert.ExecSQL;
+
+  listaAlunos.remove(alunoSelecionado);
+  ltbxAlunos.items.Delete(ltbxAlunos.ItemIndex);
+
+  lblTitAlunos.Caption := 'Alunos Cadastrados : ' + (listaAlunos.Count).ToString;
+
+  btnEditarAluno.Enabled := False;
+  btnExcluirAluno.Enabled := False;
+
+  matriculasExclusao.Free;
 end;
 
 
@@ -461,16 +503,67 @@ end;
 
 
 procedure Tpages.excluirDisciplina;
-var disciplinaSelecionado : TDisciplina;
+var
+  disciplinaSelecionado: TDisciplina;
+  turma: TTurma;
+  turmasExclusao: TStringList;
+  i: Integer;
 begin
-   disciplinaSelecionado := getDisciplinaById(listaDisciplinas[ltbxDisciplinas.ItemIndex].getCodigo);
-   dbConnection.qryInsert.SQL.Text:= 'UPDATE public.tb_disciplinas SET ativo = false WHERE disciplina_id = ' + (disciplinaSelecionado.getCodigo).ToString + ';';
-   dbConnection.qryInsert.ExecSQL;
-   btnEditarDisciplina.Enabled := False;
-   btnExcluirDisciplina.Enabled := False;
-   listaDisciplinas.remove(disciplinaSelecionado);
-   ltbxDisciplinas.items.Delete(ltbxDisciplinas.ItemIndex);
-   lblTitDisciplina.Caption := 'Disciplinas Cadastradas : ' + (listaDisciplinas.Count).ToString;
+  disciplinaSelecionado := getDisciplinaById(listaDisciplinas[ltbxDisciplinas.ItemIndex].getCodigo);
+  turmasExclusao := TStringList.Create;
+
+  for turma in listaTurmas do begin
+    if turma.getCodigoDisciplina = disciplinaSelecionado.getCodigo then begin
+      turmasExclusao.Add(turma.getNome);
+    end;
+  end;
+
+  if turmasExclusao.Count > 0 then begin
+    if not confirmarExclusao('A disciplina ' + disciplinaSelecionado.getNome + ' será apagada. As turmas '+ sLineBreak + turmasExclusao.Text +'e todas as suas matrículas também serão apagadas. Deseja continuar?') then begin
+      turmasExclusao.Free;
+      Exit;
+    end;
+
+    dbConnection.qryInsert.SQL.Text := 'UPDATE public.tb_matriculas SET ativo = false ' + 'WHERE matricula_id_turma IN (SELECT turma_id FROM public.tb_turmas ' + 'WHERE turma_id_disciplina = ' + (disciplinaSelecionado.getCodigo).ToString + ');';
+    dbConnection.qryInsert.ExecSQL;
+
+    dbConnection.qryInsert.SQL.Text := 'UPDATE public.tb_turmas SET ativo = false WHERE turma_id_disciplina = ' + (disciplinaSelecionado.getCodigo).ToString + ';';
+    dbConnection.qryInsert.ExecSQL;
+
+    for i := listaMatriculas.Count - 1 downto 0 do begin
+      if getTurmaById(listaMatriculas[i].getCodigoTurma).getCodigoDisciplina = disciplinaSelecionado.getCodigo then
+      begin
+        listaMatriculas.Remove(listaMatriculas[i]);
+      end;
+    end;
+
+    for i := listaTurmas.Count - 1 downto 0 do begin
+      if listaTurmas[i].getCodigoDisciplina = disciplinaSelecionado.getCodigo then begin
+        listaTurmas.Remove(listaTurmas[i]);
+      end;
+    end;
+
+    listarTurmas;
+    listarMatriculas;
+  end else begin
+    if not confirmarExclusao('Deseja continuar com a exclusão da disciplina ' + disciplinaSelecionado.getNome + '?') then begin
+      turmasExclusao.Free;
+      Exit;
+    end;
+  end;
+
+  dbConnection.qryInsert.SQL.Text := 'UPDATE public.tb_disciplinas SET ativo = false WHERE disciplina_id = ' + (disciplinaSelecionado.getCodigo).ToString + ';';
+  dbConnection.qryInsert.ExecSQL;
+
+  listaDisciplinas.remove(disciplinaSelecionado);
+  ltbxDisciplinas.items.Delete(ltbxDisciplinas.ItemIndex);
+
+  lblTitDisciplina.Caption := 'Disciplinas Cadastradas : ' + (listaDisciplinas.Count).ToString;
+
+  btnEditarDisciplina.Enabled := False;
+  btnExcluirDisciplina.Enabled := False;
+
+  turmasExclusao.Free;
 end;
 
 
@@ -566,6 +659,11 @@ procedure Tpages.excluirTurma;
 var turmaSelecionado : TTurma;
 begin
    turmaSelecionado := getTurmaById(listaTurmas[ltbxTurmas.ItemIndex].getCodigo);
+
+
+   if not confirmarExclusao('Deseja continuar com a exclusão da turma ' + turmaSelecionado.getNome + '?') then begin
+     exit;
+   end;
    dbConnection.qryInsert.SQL.Text:= 'UPDATE public.tb_turmas SET ativo = false WHERE turma_id = ' + (turmaSelecionado.getCodigo).ToString + ';';
    dbConnection.qryInsert.ExecSQL;
    btnEditarTurma.Enabled := False;
@@ -649,6 +747,11 @@ procedure Tpages.excluirMatricula;
 var matriculaSelecionado : TMatricula;
 begin
    matriculaSelecionado := getMatriculaById(listaMatriculas[ltbxMatriculas.ItemIndex].getCodigo);
+
+
+   if not confirmarExclusao('Deseja continuar com a exclusão da matrícula ' + matriculaSelecionado.getCodigo.ToString + '?') then begin
+     exit;
+   end;
    dbConnection.qryInsert.SQL.Text:= 'UPDATE public.tb_matriculas SET ativo = false WHERE matricula_id = ' + (matriculaSelecionado.getCodigo).ToString + ';';
    dbConnection.qryInsert.ExecSQL;
    btnEditarMatricula.Enabled := False;
