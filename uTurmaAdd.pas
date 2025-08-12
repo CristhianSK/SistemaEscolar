@@ -60,6 +60,9 @@ begin
 
     listaTurmas[indexTurmaSelecionado].setNome(inputNome.text);
     listaTurmas[indexTurmaSelecionado].setCodigo(StrToInt(inputCodigo.Text));
+    listaTurmas[indexTurmaSelecionado].setCodigoProfessor(professorSelecionado.getCodigo);
+    listaTurmas[indexTurmaSelecionado].setCodigo(disciplinaSelecionada.getCodigo);
+
     btnModalTurma.Caption := 'Adicionar';
   end else begin
     dbConnection.qryInsert.SQL.Text:= 'INSERT INTO public.tb_turmas (turma_nome, turma_id_professor, turma_id_disciplina) VALUES('+ QuotedStr(inputNome.Text) +','+ (professorSelecionado.getCodigo).ToString +','+ (disciplinaSelecionada.getCodigo).ToString +')';
@@ -76,7 +79,7 @@ begin
     slcProfessores.ItemIndex := -1;
     slcDisciplinas.ItemIndex := -1;
     novasTurmas := novasTurmas + 1;
-
+    dbConnection.qryMaxTurmas.Close;
 end;
 
 
@@ -90,16 +93,17 @@ begin
 procedure TmodalTurma.FormShow(Sender: TObject);
 var professor : TProfessor;
     disciplina : TDisciplina;
+    i: Integer;
 begin
 slcProfessores.Clear;
 slcDisciplinas.Clear;
 
   for professor in listaProfessores do begin
-    slcProfessores.items.Add(professor.getNome);
+    slcProfessores.items.AddObject(professor.getNome, professor);
   end;
 
   for disciplina in listaDisciplinas do begin
-    slcDisciplinas.items.Add(disciplina.getNome);
+    slcDisciplinas.items.AddObject(disciplina.getNome, disciplina);
 
   end;
 
@@ -112,8 +116,27 @@ slcDisciplinas.Clear;
       var turma := getTurmaById(listaTurmas[indexTurmaSelecionado].getCodigo);
       inputCodigo.Text := turma.getCodigo.ToString ;
       inputNome.Text := turma.getNome;
-      slcProfessores.ItemIndex := indexTurmaSelecionado;
-      slcDisciplinas.ItemIndex := indexTurmaSelecionado;
+
+    for i := 0 to slcProfessores.Items.Count - 1 do begin
+      var prof := slcProfessores.Items.Objects[i] as TProfessor;
+      if prof.getCodigo = turma.getCodigoProfessor then
+      begin
+        slcProfessores.ItemIndex := i;
+        professorSelecionado := prof;
+        Break;
+      end;
+    end;
+
+
+    for i := 0 to slcDisciplinas.Items.Count - 1 do begin
+      var disc := slcDisciplinas.Items.Objects[i] as TDisciplina;
+      if disc.getCodigo = turma.getCodigoDisciplina then
+      begin
+        slcDisciplinas.ItemIndex := i;
+        disciplinaSelecionada := disc;
+        Break;
+      end;
+    end;
 
   end;
 

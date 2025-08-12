@@ -66,6 +66,7 @@ begin
   inputNome.Text := '';
   inputCpf.Text := '';
   novosProfessores := novosProfessores + 1;
+  dbConnection.qryMaxProfessores.Close;
 end;
 
 procedure TmodalProfessor.FormCreate(Sender: TObject);

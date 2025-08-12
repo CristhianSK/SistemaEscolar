@@ -106,6 +106,9 @@ type
     procedure btnModalDisciplinaClick(Sender: TObject);
     procedure btnEditarDisciplinaClick(Sender: TObject);
     procedure btnModalMatriculaClick(Sender: TObject);
+    procedure ltbxMatriculasClick(Sender: TObject);
+    procedure btnExcluirMatriculaClick(Sender: TObject);
+    procedure btnEditarMatriculaClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -473,6 +476,7 @@ begin
   turmaAdd.indexTurmaSelecionado := ltbxTurmas.ItemIndex;
 
   turmaAdd.ShowModal;
+
   ltbxTurmas.Items[ltbxTurmas.ItemIndex] := turmaSelecionado.getCodigo.ToString + ' - ' + turmaSelecionado.getNome + ' - Professor ID: ' + turmaSelecionado.getCodigoProfessor.ToString + ' - Materia ID: ' + turmaSelecionado.getCodigoDisciplina.ToString;
 
 end;
@@ -543,8 +547,11 @@ begin
   ltbxMatriculas.Clear;
   i := 0;
 
+
   for matricula in listaMatriculas do begin
-    textoAdicionado := listaMatriculas[i].getCodigo.ToString + ' - Aluno ID: ' + listaMatriculas[i].getCodigoAluno.ToString + ' - Turma ID: ' + listaMatriculas[i].getCodigoTurma.ToString;
+    var aluno := getAlunoById(listaMatriculas[i].getCodigoAluno);
+    var turma := getTurmaById(listaMatriculas[i].getCodigoTurma);
+    textoAdicionado := listaMatriculas[i].getCodigo.ToString + ' - Aluno: ' + aluno.getNome + ' - Turma: ' + turma.getNome;
     ltbxMatriculas.Items.Add(textoAdicionado);
     i := i + 1;
   end;
@@ -579,7 +586,10 @@ begin
   matriculaAdd.indexMatriculaSelecionado := ltbxMatriculas.ItemIndex;
 
   matriculaAdd.ShowModal;
-  ltbxMatriculas.Items[ltbxMatriculas.ItemIndex] := matriculaSelecionado.getCodigo.ToString + ' - ' + matriculaSelecionado.getCodigoAluno.ToString + ' - ' + matriculaSelecionado.getCodigoTurma.ToString;
+  var aluno := getAlunoById(matriculaSelecionado.getCodigoAluno);
+  var turma := getTurmaById(matriculaSelecionado.getCodigoTurma);
+  ltbxMatriculas.Items[ltbxMatriculas.ItemIndex] :=matriculaSelecionado.getCodigo.ToString + ' - Aluno: ' + aluno.getNome + ' - Turma : ' + turma.getNome;
+
 
 end;
 
@@ -593,7 +603,11 @@ begin
   for i := 0 to matriculaAdd.novosMatriculas - 1 do
   begin
     adicionarMatricula := listaMatriculas.Count - (matriculaAdd.novosMatriculas) + i ;
-    ltbxMatriculas.Items.Add(listaMatriculas[adicionarMatricula].getCodigo.ToString + ' - ' + listaMatriculas[adicionarMatricula].getCodigoAluno.toString + ' - ' + listaMatriculas[adicionarMatricula].getCodigoTurma.toString);
+    var aluno := getAlunoById(listaMatriculas[adicionarMatricula].getCodigoAluno);
+    var turma := getTurmaById(listaMatriculas[adicionarMatricula].getCodigoTurma);
+
+    ltbxMatriculas.Items.Add(listaMatriculas[adicionarMatricula].getCodigo.ToString + ' - Aluno: ' + aluno.getNome + ' - Turma: ' + turma.getNome);
+
   end;
 
 end;
@@ -716,6 +730,8 @@ begin
   disciplinaAdd.free;
 end;
 
+
+
 procedure Tpages.ltbxDisciplinasClick(Sender: TObject);
 begin
    if ltbxDisciplinas.ItemIndex <> -1 then begin
@@ -723,6 +739,7 @@ begin
       btnExcluirDisciplina.Enabled := True;
    end;
 end;
+
 
 
 procedure Tpages.btnExcluirDisciplinaClick(Sender: TObject);
@@ -798,9 +815,34 @@ begin
   matriculaAdd.ShowModal;
   matriculaAdd.Free;
 
-  if turmaAdd.novasTurmas > 0 then mostrarNovasTurmas;
+  if matriculaAdd.novosMatriculas > 0 then mostrarNovosMatriculas;
 
 end;
+
+procedure Tpages.ltbxMatriculasClick(Sender: TObject);
+begin
+   if ltbxMatriculas.ItemIndex <> -1 then begin
+      btnEditarMatricula.Enabled := True;
+      btnExcluirMatricula.Enabled := True;
+   end;
+end;
+
+procedure Tpages.btnEditarMatriculaClick(Sender: TObject);
+begin
+  matriculaAdd:= TmodalMatricula.Create(Self);
+  matriculaAdd.btnModalMatricula.Caption := 'Atualizar';
+  editarMatricula;
+  matriculaAdd.free;
+
+end;
+
+
+procedure Tpages.btnExcluirMatriculaClick(Sender: TObject);
+begin
+  excluirMatricula;
+end;
+
+
 
 
 procedure Tpages.FormCreate(Sender: TObject);

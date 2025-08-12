@@ -60,6 +60,7 @@ begin
   inputCodigo.Text := (qntAlunos).ToString;
   inputNome.Text := '';
   novosAlunos := novosAlunos + 1;
+  dbConnection.qryMaxAlunos.Close;
 
 
 end;

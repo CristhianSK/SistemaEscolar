@@ -17,7 +17,7 @@ object pages: Tpages
     Top = 0
     Width = 633
     Height = 441
-    ActivePage = tabMatriculas
+    ActivePage = tabTurmas
     TabOrder = 0
     object Alunos: TTabSheet
       Caption = 'Alunos'
@@ -171,7 +171,6 @@ object pages: Tpages
         Align = alTop
         BevelOuter = bvNone
         TabOrder = 0
-        ExplicitTop = 8
         object lblTitDisciplina: TLabel
           Left = 278
           Top = 20
@@ -294,7 +293,7 @@ object pages: Tpages
         object lblTitTurmas: TLabel
           Left = 278
           Top = 20
-          Width = 106
+          Width = 107
           Height = 15
           Margins.Left = 270
           Margins.Top = 12
@@ -322,6 +321,7 @@ object pages: Tpages
           Align = alCustom
           ItemHeight = 15
           TabOrder = 0
+          OnClick = ltbxMatriculasClick
         end
         object btnModalMatricula: TButton
           Left = 300
@@ -340,6 +340,7 @@ object pages: Tpages
           Caption = 'Editar'
           Enabled = False
           TabOrder = 2
+          OnClick = btnEditarMatriculaClick
         end
         object btnExcluirMatricula: TButton
           Left = 381
@@ -349,6 +350,7 @@ object pages: Tpages
           Caption = 'Excluir'
           Enabled = False
           TabOrder = 3
+          OnClick = btnExcluirMatriculaClick
         end
       end
       object Panel8: TPanel

@@ -26,7 +26,7 @@ object modalTurma: TmodalTurma
     object Label1: TLabel
       Left = 35
       Top = 6
-      Width = 119
+      Width = 120
       Height = 15
       Caption = 'Adicionar Nova Turma'
     end

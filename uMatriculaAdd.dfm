@@ -47,7 +47,7 @@ object modalMatricula: TmodalMatricula
     object lblInputTurma: TLabel
       Left = 32
       Top = 140
-      Width = 34
+      Width = 35
       Height = 15
       Caption = 'Turma'
     end

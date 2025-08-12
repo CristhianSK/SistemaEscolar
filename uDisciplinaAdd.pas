@@ -61,7 +61,7 @@ begin
   inputCodigo.Text := (qntDisciplinas).ToString;
   inputNome.Text := '';
   novosDisciplinas := novosDisciplinas + 1;
-
+  dbConnection.qryMaxDisciplinas.Close;
 end;
 
 procedure TmodalDisciplina.FormCreate(Sender: TObject);
