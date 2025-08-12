@@ -55,6 +55,8 @@ type
     procedure btnModalAlunoClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
 
+  function confirmarExclusao(const AMessage: string): Boolean;
+
     procedure listarAlunos;
     procedure puxarAlunos;
     procedure editarAluno;
@@ -136,6 +138,15 @@ implementation
 ////// COMEÇO DO CODIGO ALUNOS//////
 ////// COMEÇO DO CODIGO ALUNOS//////
 //////FUNÇÕES /////
+function Tpages.confirmarExclusao(const AMessage: string): Boolean;
+begin
+  Result := MessageDlg(
+    AMessage,
+    mtConfirmation,
+    [mbYes, mbNo],
+    0
+  ) = mrYes;
+end;
 
 procedure Tpages.puxarAlunos;
 begin
@@ -208,6 +219,7 @@ begin
    btnExcluirAluno.Enabled := False;
    listaAlunos.remove(alunoSelecionado);
    ltbxAlunos.items.Delete(ltbxAlunos.ItemIndex);
+   lblTitAlunos.Caption := 'Alunos Cadastrados : ' + (listaAlunos.Count).ToString;
 end;
 
 
@@ -292,18 +304,77 @@ begin
   listarTurmas;
 end;
 
-
 procedure Tpages.excluirProfessor;
-var professorSelecionado : TProfessor;
+var
+  professorSelecionado: TProfessor;
+  turma: TTurma;
+  turmasExclusao: TStringList;
+  i: Integer;
 begin
-   professorSelecionado := getProfessorById(listaProfessores[ltbxProfessores.ItemIndex].getCodigo);
-   dbConnection.qryInsert.SQL.Text:= 'UPDATE public.tb_professores SET ativo = false WHERE professor_id = ' + (professorSelecionado.getCodigo).ToString + ';';
-   dbConnection.qryInsert.ExecSQL;
-   btnEditarProfessor.Enabled := False;
-   btnExcluirProfessor.Enabled := False;
-   listaProfessores.remove(professorSelecionado);
-   ltbxProfessores.items.Delete(ltbxProfessores.ItemIndex);
+  professorSelecionado := getProfessorById(listaProfessores[ltbxProfessores.ItemIndex].getCodigo);
+  turmasExclusao := TStringList.Create;
+
+  for turma in listaTurmas do begin
+    if turma.getCodigoProfessor = professorSelecionado.getCodigo then begin
+      turmasExclusao.Add(turma.getNome);
+    end;
+  end;
+
+
+  if turmasExclusao.Count > 0 then begin
+    if not confirmarExclusao('O professor ' + professorSelecionado.getNome + ' será apagado. As turmas '+ sLineBreak + turmasExclusao.Text +'e todas as suas matrículas também serão apagadas. Deseja continuar?') then begin
+      turmasExclusao.Free;
+      Exit;
+    end;
+
+    dbConnection.qryInsert.SQL.Text := 'UPDATE public.tb_matriculas SET ativo = false ' + 'WHERE matricula_id_turma IN (SELECT turma_id FROM public.tb_turmas ' +'WHERE turma_id_professor = ' + (professorSelecionado.getCodigo).ToString + ');';
+    dbConnection.qryInsert.ExecSQL;
+
+    dbConnection.qryInsert.SQL.Text := 'UPDATE public.tb_turmas SET ativo = false WHERE turma_id_professor = ' + (professorSelecionado.getCodigo).ToString + ';';
+    dbConnection.qryInsert.ExecSQL;
+
+    for i := listaMatriculas.Count - 1 downto 0 do begin
+      if getTurmaById(listaMatriculas[i].getCodigoTurma).getCodigoProfessor = professorSelecionado.getCodigo then begin
+        listaMatriculas.Remove(listaMatriculas[i]);
+      end;
+    end;
+
+    for i := listaTurmas.Count - 1 downto 0 do begin
+      if listaTurmas[i].getCodigoProfessor = professorSelecionado.getCodigo then begin
+        listaTurmas.Remove(listaTurmas[i]);
+      end;
+    end;
+
+
+    listarTurmas;
+    listarMatriculas;
+  end else begin
+    if not confirmarExclusao('Deseja continuar com a exclusão do professor ' + professorSelecionado.getNome + '?') then begin
+      turmasExclusao.Free;
+      Exit;
+    end;
+  end;
+
+
+  dbConnection.qryInsert.SQL.Text := 'UPDATE public.tb_professores SET ativo = false WHERE professor_id = ' + (professorSelecionado.getCodigo).ToString + ';';
+  dbConnection.qryInsert.ExecSQL;
+
+
+  listaProfessores.remove(professorSelecionado);
+  ltbxProfessores.items.Delete(ltbxProfessores.ItemIndex);
+
+
+  lblTitProfessores.Caption := 'Professores Cadastrados : ' + (listaProfessores.Count).ToString;
+
+
+  btnEditarProfessor.Enabled := False;
+  btnExcluirProfessor.Enabled := False;
+
+
+  turmasExclusao.Free;
 end;
+
+
 
 
 procedure Tpages.mostrarNovosProfessores;
@@ -399,6 +470,7 @@ begin
    btnExcluirDisciplina.Enabled := False;
    listaDisciplinas.remove(disciplinaSelecionado);
    ltbxDisciplinas.items.Delete(ltbxDisciplinas.ItemIndex);
+   lblTitDisciplina.Caption := 'Disciplinas Cadastradas : ' + (listaDisciplinas.Count).ToString;
 end;
 
 
@@ -500,6 +572,7 @@ begin
    btnExcluirTurma.Enabled := False;
    listaTurmas.remove(turmaSelecionado);
    ltbxTurmas.items.Delete(ltbxTurmas.ItemIndex);
+   lblTitTurmas.Caption := 'Turmas Cadastradas : ' + (listaTurmas.Count).ToString;
 end;
 
 
