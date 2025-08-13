@@ -1,8 +1,8 @@
--- DROP SCHEMA public;
+DROP DATABASE IF EXISTS "sistemaEscolar";
+CREATE DATABASE "sistemaEscolar";
 
-CREATE SCHEMA public AUTHORIZATION pg_database_owner;
+// RODAR DROP E CREATE ANTES
 
--- DROP SEQUENCE public.table_alunos_aluno_codigo_seq;
 
 CREATE SEQUENCE public.table_alunos_aluno_codigo_seq
 	INCREMENT BY 1
@@ -11,7 +11,6 @@ CREATE SEQUENCE public.table_alunos_aluno_codigo_seq
 	START 1
 	CACHE 1
 	NO CYCLE;
--- DROP SEQUENCE public.tb_disciplinas_disciplina_id_seq;
 
 CREATE SEQUENCE public.tb_disciplinas_disciplina_id_seq
 	INCREMENT BY 1
@@ -20,7 +19,6 @@ CREATE SEQUENCE public.tb_disciplinas_disciplina_id_seq
 	START 1
 	CACHE 1
 	NO CYCLE;
--- DROP SEQUENCE public.tb_matriculas_matricula_id_seq;
 
 CREATE SEQUENCE public.tb_matriculas_matricula_id_seq
 	INCREMENT BY 1
@@ -29,7 +27,6 @@ CREATE SEQUENCE public.tb_matriculas_matricula_id_seq
 	START 1
 	CACHE 1
 	NO CYCLE;
--- DROP SEQUENCE public.tb_professores_professor_id_seq;
 
 CREATE SEQUENCE public.tb_professores_professor_id_seq
 	INCREMENT BY 1
@@ -38,7 +35,6 @@ CREATE SEQUENCE public.tb_professores_professor_id_seq
 	START 1
 	CACHE 1
 	NO CYCLE;
--- DROP SEQUENCE public.tb_turmas_turma_id_seq;
 
 CREATE SEQUENCE public.tb_turmas_turma_id_seq
 	INCREMENT BY 1
@@ -46,11 +42,7 @@ CREATE SEQUENCE public.tb_turmas_turma_id_seq
 	MAXVALUE 2147483647
 	START 1
 	CACHE 1
-	NO CYCLE;-- public.tb_alunos definição
-
--- Drop table
-
--- DROP TABLE public.tb_alunos;
+	NO CYCLE;
 
 CREATE TABLE public.tb_alunos (
 	aluno_id int4 DEFAULT nextval('table_alunos_aluno_codigo_seq'::regclass) NOT NULL,
@@ -59,12 +51,7 @@ CREATE TABLE public.tb_alunos (
 	CONSTRAINT table_alunos_pk PRIMARY KEY (aluno_id)
 );
 
-
--- public.tb_disciplinas definição
-
--- Drop table
-
--- DROP TABLE public.tb_disciplinas;
+INSERT INTO public.tb_alunos (aluno_nome) VALUES('Aluno de Exemplo');
 
 CREATE TABLE public.tb_disciplinas (
 	disciplina_id serial4 NOT NULL,
@@ -74,12 +61,7 @@ CREATE TABLE public.tb_disciplinas (
 	CONSTRAINT tb_disciplinas_unique UNIQUE (disciplina_nome)
 );
 
-
--- public.tb_professores definição
-
--- Drop table
-
--- DROP TABLE public.tb_professores;
+INSERT INTO public.tb_disciplinas (disciplina_nome) VALUES('Disciplina de Exemplo');
 
 CREATE TABLE public.tb_professores (
 	professor_id serial4 NOT NULL,
@@ -89,12 +71,7 @@ CREATE TABLE public.tb_professores (
 	CONSTRAINT tb_professores_pk PRIMARY KEY (professor_id)
 );
 
-
--- public.tb_turmas definição
-
--- Drop table
-
--- DROP TABLE public.tb_turmas;
+INSERT INTO public.tb_professores (professor_nome, professor_cpf) VALUES('Professor de Exemplo', '11122233344');
 
 CREATE TABLE public.tb_turmas (
 	turma_id serial4 NOT NULL,
@@ -107,12 +84,7 @@ CREATE TABLE public.tb_turmas (
 	CONSTRAINT tb_turmas_turma_id_professor_fkey FOREIGN KEY (turma_id_professor) REFERENCES public.tb_professores(professor_id)
 );
 
-
--- public.tb_matriculas definição
-
--- Drop table
-
--- DROP TABLE public.tb_matriculas;
+INSERT INTO public.tb_turmas (turma_nome, turma_id_professor, turma_id_disciplina) VALUES('Turma de Exemplo', 1, 1);
 
 CREATE TABLE public.tb_matriculas (
 	matricula_id serial4 NOT NULL,
@@ -123,3 +95,5 @@ CREATE TABLE public.tb_matriculas (
 	CONSTRAINT tb_matriculas_matricula_id_aluno_fkey FOREIGN KEY (matricula_id_aluno) REFERENCES public.tb_alunos(aluno_id),
 	CONSTRAINT tb_matriculas_matricula_id_turma_fkey FOREIGN KEY (matricula_id_turma) REFERENCES public.tb_turmas(turma_id)
 );
+
+INSERT INTO public.tb_matriculas (matricula_id_aluno, matricula_id_turma) VALUES(1, 1);
