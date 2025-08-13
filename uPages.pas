@@ -7,7 +7,8 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.ExtCtrls, uAluno, uProfessor, uTurma, uAlunoAdd, uTurmaAdd
   , uProfessorAdd, uMatricula, uMatriculaAdd,
   uDisciplina,uDisciplinaAdd, uData,
-  Vcl.StdCtrls,FireDAC.Comp.Client, uConnection, System.Generics.Collections, uListas;
+  Vcl.StdCtrls,FireDAC.Comp.Client, uConnection, System.Generics.Collections, uListas,
+  Vcl.Imaging.pngimage;
 
 type
   Tpages = class(TForm)
@@ -52,6 +53,11 @@ type
     btnExcluirMatricula: TButton;
     Panel8: TPanel;
     lblMatriculas: TLabel;
+    Image1: TImage;
+    Image2: TImage;
+    Image3: TImage;
+    Image4: TImage;
+    Image5: TImage;
     procedure btnModalAlunoClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
 
@@ -147,6 +153,7 @@ begin
     0
   ) = mrYes;
 end;
+
 
 procedure Tpages.puxarAlunos;
 begin

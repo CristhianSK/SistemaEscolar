@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, uData, uTurma, uAluno, uMatricula,
-  FireDAC.Comp.Client, uConnection, uListas;
+  FireDAC.Comp.Client, uConnection, uListas, Vcl.Imaging.pngimage;
 
 type
   TmodalMatricula = class(TForm)
@@ -18,6 +18,10 @@ type
     inputCodigo: TEdit;
     slcAlunos: TComboBox;
     slcTurmas: TComboBox;
+    Image2: TImage;
+    Image3: TImage;
+    Image4: TImage;
+    Image1: TImage;
     procedure btnModalMatriculaClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);

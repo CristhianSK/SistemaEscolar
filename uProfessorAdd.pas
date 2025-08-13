@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, uData, uProfessor,
-  FireDAC.Comp.Client, uConnection, uListas;
+  FireDAC.Comp.Client, uConnection, uListas, Vcl.Imaging.pngimage;
 
 type
   TmodalProfessor = class(TForm)
@@ -18,6 +18,10 @@ type
     inputNome: TEdit;
     inputCpf: TEdit;
     lblInputCpf: TLabel;
+    Image1: TImage;
+    Image2: TImage;
+    Image3: TImage;
+    Image4: TImage;
     procedure btnModalProfessorClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -42,6 +46,9 @@ begin
   if (inputNome.Text = '') or (inputCodigo.Text = '') then
   begin
     ShowMessage('Preencha todos os campos!');
+    Exit;
+  end else if Length(inputCpf.Text) < 11 then begin
+    ShowMessage('O CPF precisa ter 11 digitos!');
     Exit;
   end;
 

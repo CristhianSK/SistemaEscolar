@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, uData, uTurma, uProfessor, uDisciplina,
-  FireDAC.Comp.Client, uConnection, uListas;
+  FireDAC.Comp.Client, uConnection, uListas, Vcl.Imaging.pngimage;
 
 
 type
@@ -21,6 +21,10 @@ type
     lblInputDisc: TLabel;
     slcProfessores: TComboBox;
     slcDisciplinas: TComboBox;
+    Image2: TImage;
+    Image3: TImage;
+    Image4: TImage;
+    Image1: TImage;
     procedure btnModalTurmaClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormCreate(Sender: TObject);
