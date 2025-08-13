@@ -282,7 +282,7 @@ begin
     adicionarAluno := listaAlunos.Count - (alunoAdd.novosAlunos) + i ;
     ltbxAlunos.Items.Add(listaAlunos[adicionarAluno].getCodigo.ToString + ' - ' + listaAlunos[adicionarAluno].getNome );
   end;
-
+  lblTitAlunos.Caption := 'Alunos Cadastrados : ' + (listaAlunos.Count).ToString;
 end;
 
 // ****** FIM DAS FUNÇÕES ALUNOS ******
@@ -436,7 +436,7 @@ begin
     adicionarProfessor := listaProfessores.Count - (professorAdd.novosProfessores) + i ;
     ltbxProfessores.Items.Add(listaProfessores[adicionarProfessor].getCodigo.ToString + ' - ' + listaProfessores[adicionarProfessor].getNome + ' - ' + listaProfessores[adicionarProfessor].getCpf );
   end;
-
+  lblTitProfessores.Caption := 'Professores Cadastrados : ' + (listaProfessores.Count).ToString;
 end;
 
 
@@ -584,7 +584,7 @@ begin
     adicionarDisciplina := listaDisciplinas.Count - (disciplinaAdd.novosDisciplinas) + i ;
     ltbxDisciplinas.Items.Add(listaDisciplinas[adicionarDisciplina].getCodigo.ToString + ' - ' + listaDisciplinas[adicionarDisciplina].getNome );
   end;
-
+  lblTitDisciplina.Caption := 'Disciplinas Cadastradas : ' + (listaDisciplinas.Count).ToString;
 end;
 
 
@@ -694,7 +694,7 @@ begin
 
     ltbxTurmas.Items.Add(listaTurmas[adicionarTurma].getCodigo.ToString + ' - ' + listaTurmas[adicionarTurma].getNome + ' - Professor: ' + professor.getNome + ' - Materia: ' + disciplina.getNome);
   end;
-
+  lblTitTurmas.Caption := 'Turmas Cadastradas : ' + (listaTurmas.Count).ToString;
 end;
 // ****** FIM DAS FUNÇÕES TURMAS ******
 // ****** FIM DAS FUNÇÕES TURMAS ******
@@ -803,7 +803,7 @@ begin
     ltbxMatriculas.Items.Add(listaMatriculas[adicionarMatricula].getCodigo.ToString + ' - Aluno: ' + aluno.getNome + ' - Turma: ' + turma.getNome);
 
   end;
-
+  lblMatriculas.Caption := 'Matriculas Cadastradas : ' + (listaMatriculas.Count).ToString;
 end;
 
 

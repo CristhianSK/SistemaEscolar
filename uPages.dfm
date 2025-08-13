@@ -165,7 +165,7 @@ object pages: Tpages
           AlignWithMargins = True
           Left = 0
           Top = 12
-          Width = 633
+          Width = 105
           Height = 15
           Margins.Left = 0
           Margins.Top = 12
@@ -174,7 +174,6 @@ object pages: Tpages
           Align = alTop
           Alignment = taCenter
           Caption = 'Alunos Cadastrados'
-          ExplicitWidth = 105
         end
       end
       object pnlAlunos: TPanel
@@ -187,8 +186,6 @@ object pages: Tpages
         Color = 16701093
         ParentBackground = False
         TabOrder = 1
-        ExplicitLeft = -208
-        ExplicitTop = 65
         object Image2: TImage
           Left = 173
           Top = -11
@@ -1846,7 +1843,7 @@ object pages: Tpages
           AlignWithMargins = True
           Left = 0
           Top = 12
-          Width = 633
+          Width = 123
           Height = 15
           Margins.Left = 0
           Margins.Top = 12
@@ -1855,7 +1852,6 @@ object pages: Tpages
           Align = alTop
           Alignment = taCenter
           Caption = 'Disciplinas Cadastradas'
-          ExplicitWidth = 123
         end
       end
       object Panel6: TPanel
@@ -3502,7 +3498,7 @@ object pages: Tpages
           AlignWithMargins = True
           Left = 0
           Top = 12
-          Width = 633
+          Width = 107
           Height = 15
           Margins.Left = 0
           Margins.Top = 12
@@ -3511,7 +3507,6 @@ object pages: Tpages
           Align = alTop
           Alignment = taCenter
           Caption = 'Turmas Cadastradas'
-          ExplicitWidth = 106
         end
       end
     end
@@ -4342,7 +4337,7 @@ object pages: Tpages
           AlignWithMargins = True
           Left = 0
           Top = 12
-          Width = 633
+          Width = 122
           Height = 15
           Margins.Left = 0
           Margins.Top = 12
@@ -4351,7 +4346,6 @@ object pages: Tpages
           Align = alTop
           Alignment = taCenter
           Caption = 'Matr'#237'culas Cadastradas'
-          ExplicitWidth = 122
         end
       end
     end
