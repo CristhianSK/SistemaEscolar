@@ -2656,10 +2656,6 @@ object modalProfessor: TmodalProfessor
     Color = 16774376
     ParentBackground = False
     TabOrder = 0
-    ExplicitLeft = 221
-    ExplicitTop = 59
-    ExplicitWidth = 185
-    ExplicitHeight = 318
     object Label1: TLabel
       Left = 35
       Top = 6

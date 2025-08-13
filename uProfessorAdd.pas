@@ -42,7 +42,18 @@ implementation
 
 {$R *.dfm}
 procedure TmodalProfessor.btnModalProfessorClick(Sender: TObject);
+var testeCpf : double;
 begin
+
+  try
+    testeCpf := StrToFloat(inputCpf.Text);
+  except
+    ShowMessage('Preencha o CPF apenas com números!');
+    inputCpf.text := '';
+    exit;
+  end;
+
+
   if (inputNome.Text = '') or (inputCodigo.Text = '') then
   begin
     ShowMessage('Preencha todos os campos!');
