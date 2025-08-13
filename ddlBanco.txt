@@ -1,0 +1,125 @@
+-- DROP SCHEMA public;
+
+CREATE SCHEMA public AUTHORIZATION pg_database_owner;
+
+-- DROP SEQUENCE public.table_alunos_aluno_codigo_seq;
+
+CREATE SEQUENCE public.table_alunos_aluno_codigo_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+-- DROP SEQUENCE public.tb_disciplinas_disciplina_id_seq;
+
+CREATE SEQUENCE public.tb_disciplinas_disciplina_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+-- DROP SEQUENCE public.tb_matriculas_matricula_id_seq;
+
+CREATE SEQUENCE public.tb_matriculas_matricula_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+-- DROP SEQUENCE public.tb_professores_professor_id_seq;
+
+CREATE SEQUENCE public.tb_professores_professor_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;
+-- DROP SEQUENCE public.tb_turmas_turma_id_seq;
+
+CREATE SEQUENCE public.tb_turmas_turma_id_seq
+	INCREMENT BY 1
+	MINVALUE 1
+	MAXVALUE 2147483647
+	START 1
+	CACHE 1
+	NO CYCLE;-- public.tb_alunos definição
+
+-- Drop table
+
+-- DROP TABLE public.tb_alunos;
+
+CREATE TABLE public.tb_alunos (
+	aluno_id int4 DEFAULT nextval('table_alunos_aluno_codigo_seq'::regclass) NOT NULL,
+	aluno_nome varchar(40) NOT NULL,
+	ativo bool DEFAULT true NOT NULL,
+	CONSTRAINT table_alunos_pk PRIMARY KEY (aluno_id)
+);
+
+
+-- public.tb_disciplinas definição
+
+-- Drop table
+
+-- DROP TABLE public.tb_disciplinas;
+
+CREATE TABLE public.tb_disciplinas (
+	disciplina_id serial4 NOT NULL,
+	disciplina_nome varchar(40) NOT NULL,
+	ativo bool DEFAULT true NOT NULL,
+	CONSTRAINT tb_disciplinas_pk PRIMARY KEY (disciplina_id),
+	CONSTRAINT tb_disciplinas_unique UNIQUE (disciplina_nome)
+);
+
+
+-- public.tb_professores definição
+
+-- Drop table
+
+-- DROP TABLE public.tb_professores;
+
+CREATE TABLE public.tb_professores (
+	professor_id serial4 NOT NULL,
+	professor_nome varchar(40) NOT NULL,
+	professor_cpf varchar(11) NOT NULL,
+	ativo bool DEFAULT true NOT NULL,
+	CONSTRAINT tb_professores_pk PRIMARY KEY (professor_id)
+);
+
+
+-- public.tb_turmas definição
+
+-- Drop table
+
+-- DROP TABLE public.tb_turmas;
+
+CREATE TABLE public.tb_turmas (
+	turma_id serial4 NOT NULL,
+	turma_nome varchar(100) NOT NULL,
+	turma_id_professor int4 NOT NULL,
+	turma_id_disciplina int4 NOT NULL,
+	ativo bool DEFAULT true NOT NULL,
+	CONSTRAINT tb_turmas_pkey PRIMARY KEY (turma_id),
+	CONSTRAINT tb_turmas_turma_id_disciplina_fkey FOREIGN KEY (turma_id_disciplina) REFERENCES public.tb_disciplinas(disciplina_id),
+	CONSTRAINT tb_turmas_turma_id_professor_fkey FOREIGN KEY (turma_id_professor) REFERENCES public.tb_professores(professor_id)
+);
+
+
+-- public.tb_matriculas definição
+
+-- Drop table
+
+-- DROP TABLE public.tb_matriculas;
+
+CREATE TABLE public.tb_matriculas (
+	matricula_id serial4 NOT NULL,
+	matricula_id_aluno int4 NOT NULL,
+	matricula_id_turma int4 NOT NULL,
+	ativo bool DEFAULT true NOT NULL,
+	CONSTRAINT tb_matriculas_pkey PRIMARY KEY (matricula_id),
+	CONSTRAINT tb_matriculas_matricula_id_aluno_fkey FOREIGN KEY (matricula_id_aluno) REFERENCES public.tb_alunos(aluno_id),
+	CONSTRAINT tb_matriculas_matricula_id_turma_fkey FOREIGN KEY (matricula_id_turma) REFERENCES public.tb_turmas(turma_id)
+);
